@@ -10,6 +10,8 @@ app.get(`/health`, (req, res) => {
     })
 })
 
+app.use('/user', require(`./routes/user.routes.js`))
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
