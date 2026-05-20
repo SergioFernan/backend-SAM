@@ -6,13 +6,14 @@ const port = 3000;
 
 app.get(`/health`, (req, res) => {
     res.json({
-        msj: "hola mundo"
+        msj: "sitio corriendo"
     })
 })
+//endpoint para probar rutas
+app.use('/user', require(`./routes/user.routes.js`));
 
-app.use('/user', require(`./routes/user.routes.js`))
-app.use(`/products`, require(`./routes/products.routes.js`))
 
+//lanzar el servidor
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });

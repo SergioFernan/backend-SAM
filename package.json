@@ -1,9 +1,13 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "backend API REST para el proyecto SAM de eventos musicales underground",
   "license": "ISC",
-  "author": "",
+  "author": "Sergio Ivan Fernandez Galeano <sercolgi1@gmail.com>  ",
+  "contributors": [
+    "Juan David Vivas Vega",
+    "Andres Felipe Barrera Valbuena"
+  ],
   "type": "commonjs",
   "main": "index.js",
   "scripts": {

@@ -1,11 +1,10 @@
-const express = require(`express`);
+const { Router } = require(`express`);
+const { getUsers } = require("../controllers/user.controller.js");
 
-const app = express.Router();
+const app = Router();
 
-app.get(`/`, (req, res) => {
-    res.json({
-        msj: `hola mundo`
-    })
-})
+//definicion de las rutas de user
+// rutea desde ../controllers/user.controller.js la funcion con el json
+app.get(`/`, getUsers)
 
 module.exports = app;
