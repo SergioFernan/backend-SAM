@@ -23,4 +23,4 @@ function deleteUser(req, res) {
     })
 }
 
-module.exports = { getUsers, postUsers, putUsers, deleteUser };
+export { getUsers, postUsers, putUsers, deleteUser };

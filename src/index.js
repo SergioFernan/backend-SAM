@@ -1,4 +1,5 @@
-const express = require("express");
+import express from "express";
+import userRoutes from "./routes/user.routes.js"
 
 const app = express();
 
@@ -10,7 +11,7 @@ app.get(`/health`, (req, res) => {
     })
 })
 //endpoint para probar rutas
-app.use('/user', require(`./routes/user.routes.js`));
+app.use('/user', userRoutes);
 
 
 //lanzar el servidor

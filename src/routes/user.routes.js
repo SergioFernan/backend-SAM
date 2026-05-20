@@ -1,5 +1,5 @@
-const { Router } = require(`express`);
-const { getUsers, postUsers, putUsers, deleteUser } = require("../controllers/user.controller.js");
+import { Router } from "express";
+import { getUsers, postUsers, putUsers, deleteUser } from "../controllers/user.controller.js";
 
 const app = Router();
 
@@ -13,4 +13,4 @@ app.put(`/`, putUsers)
 
 app.delete(`/`, deleteUser)
 
-module.exports = app;
+export default app;
