@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 async function dbConection() {
     try {
-        await mongoose.connect(`mongodb+srv://mrippo:password@cluster0.s8nhaxy.mongodb.net/db-SAM`);
+        await mongoose.connect('mongodb+srv://mrippo:Santafesito-2@cluster0.s8nhaxy.mongodb.net/db-SAM');
         console.log(`conected mongodb`);
     } catch (error) {
         console.error(`conected failed`);
