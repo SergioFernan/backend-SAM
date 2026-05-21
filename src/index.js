@@ -1,7 +1,12 @@
 import express from "express";
+
 import userRoutes from "./routes/user.routes.js"
 
+import { dbConection } from "./config/mongo.config.js";
+
 const app = express();
+
+dbConection();//llamamos a la funcion para conectar con la base de datos
 
 const port = 3000;
 
