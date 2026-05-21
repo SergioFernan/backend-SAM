@@ -1,6 +1,7 @@
 import express from "express";
 
 import userRoutes from "./routes/user.routes.js"
+import categoryRoutes from './routes/categories.routes.js'
 
 import { dbConection } from "./config/mongo.config.js";
 
@@ -17,6 +18,9 @@ app.get(`/health`, (req, res) => {
 })
 //endpoint para probar rutas
 app.use('/user', userRoutes);
+
+
+app.use('/categories', categoryRoutes)
 
 
 //lanzar el servidor
