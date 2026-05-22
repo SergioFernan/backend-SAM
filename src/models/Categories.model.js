@@ -5,26 +5,28 @@ import { Schema, model } from "mongoose";
 const CategorySchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     description: String,
-    price: {
-        type: Number,
-        default: 0,
-        min: 0,
+    status: {
+        type: Boolean,
+        default: true
     },
-    stock: {
-        type: Number,
-        default: 1, 
-        min: 1
-    }
-    
-},{});
+    // createDate: {
+    // type: Date,
+    // default: Date.now
+    // }
+
+},{
+    versionKey: false,
+    timestamps: true
+});
 
 // 2da parte: Definir el modelo 
 
 const CagoryModel = model(
-    'Festivals',                // Define el nombre de la collección que almacenará el objeto creado con este schema 
+    'category',                // Define el nombre de la collección que almacenará el objeto creado con este schema 
     CategorySchema
 );
 
