@@ -22,10 +22,18 @@ const EventSchema = new Schema({
     status : {
         type: Boolean,
         default: true
+    },
+
+    CreatedDate: { 
+        type: Date,
+        default: Date
     }
 
 
-}, {});
+}, {
+    versionKey: false,
+    timestamps: true
+});
 
 
 // 2. Definir el modelo
