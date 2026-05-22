@@ -1,4 +1,5 @@
-import CagoryModel from "../models/categories.model.js";
+import CategoryModel from "../models/categories.model.js";
+import { insertcategory } from "../services/category.service.js";
 
 const getCategory = ( req, res ) => {
 
@@ -10,18 +11,29 @@ const getCategory = ( req, res ) => {
 
 const postCategory = async ( req, res ) => {   //La función tiene que ser async 
 
+    try {
+        
     //Obtengo los datos enviados en la petición:
     const inputData = req.body;
 
-    //Registra usando el Modelo y guarda la respuesta en:
-    const data = await CagoryModel.create( inputData );  //Compara los datos que entran con los que tiene reservados en categories.model
+    //Registra usando el Modelo y guarda la respuesta en la cosntatnte data:
+
+    const data = await insertcategory ( inputData );
    
     //Respondemos al cliente enviando los datos registrados
     res.json({
-        // msj:'Create category',
-        //inputData: inputData,
         data: data
     })
+
+    } catch (error) {
+
+            console.error( error);  //Mensaje en la consola para el desarrollador 
+
+            // Respondemos al ususario enciando un mensaje humano 
+        res.status(500).json({
+            msg: 'No se pudo registrar la categoría'   
+        })
+    }
 };
 
 
