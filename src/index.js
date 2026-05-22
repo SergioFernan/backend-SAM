@@ -8,6 +8,9 @@ const app = express();
 
 dbConection();//llamamos a la funcion para conectar con la base de datos
 
+//middlewares
+app.use(express.json());//para que express pueda entender el formato json en req.body
+
 const port = 3000;
 
 app.get(`/health`, (req, res) => {
