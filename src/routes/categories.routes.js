@@ -7,9 +7,9 @@ import { deleteCategory, getCategory, postCategory, putcategory } from "../contr
 
 //Definir rutas:
 
-app.get('/', getCategory)
-app.post('/', postCategory)
-app.put('/', putcategory)
-app.delete('/', deleteCategory)
+app.get('/', getCategory);
+app.post('/', postCategory);
+app.put('/', putcategory);
+app.delete('/', deleteCategory);
 
 export default app;

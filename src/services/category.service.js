@@ -5,8 +5,14 @@ import CategoryModel from "../models/categories.model.js";
 const insertcategory = async ( newCategory ) => {
 
     return await CategoryModel.create( newCategory );
-}
+};
+
+const dbGetCategory = async () => {
+
+    return await CategoryModel.find();
+}; 
 
 export { 
-    insertcategory
-}
+    insertcategory,
+    dbGetCategory
+};

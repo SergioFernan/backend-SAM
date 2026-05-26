@@ -6,7 +6,7 @@ const CategorySchema = new Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true         //Quita los espacios al principio y al final para evitar espacios inecesarios 
     },
     description: String,
     status: {
@@ -20,7 +20,7 @@ const CategorySchema = new Schema({
 
 },{
     versionKey: false,
-    timestamps: true
+    timestamps: true  
 });
 
 // 2da parte: Definir el modelo 

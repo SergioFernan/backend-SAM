@@ -24,7 +24,7 @@ app.use('/user', userRoutes);
 app.use( express.json() );  //Habilitamos la interceptación de objetos JSon
 
 
-app.use('/categories', categoryRoutes)
+app.use('/categories', categoryRoutes);
 
 
 //lanzar el servidor
