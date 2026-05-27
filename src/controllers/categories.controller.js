@@ -1,5 +1,5 @@
 import CategoryModel from "../models/categories.model.js";
-import { dbGetCategory, insertcategory } from "../services/category.service.js";
+import { dbCreateCategory, dbDeleteCategory, dbGetCategory } from "../services/category.service.js";
 
 
 
@@ -11,14 +11,14 @@ const getCategory = async ( req, res ) => {
 
         res.status(201).json({
         msj:'Home, Festivals, Concerts, Clubs',
-        data: data
+        // data: data
     })
 
     } catch ( error ) {
         console.error ( error );
 
         res.status(500).json({
-            msg: 'No se pudieron obtener las categories'
+            msg: 'No se pudieron obtener las categorias'
         })
     }
 };
@@ -36,7 +36,7 @@ const postCategory = async ( req, res ) => {   //La función tiene que ser async
 
     //Registra usando el Modelo y guarda la respuesta en la cosntatnte data:
 
-    const data = await insertcategory ( inputData );
+    const data = await dbCreateCategory ( inputData );
    
     //Respondemos al cliente enviando los datos registrados
     res.status(201).json({
@@ -62,11 +62,26 @@ const putcategory = ( req, res ) => {
     })
 };
 
-const deleteCategory = ( req, res ) => {
 
-    res,json({
-        msj:'Delete category'
+
+
+
+const deleteCategory = async ( req, res ) => {
+
+    const id = req.params.id;
+
+    const data = await dbDeleteCategory( id );
+
+    res.json({
+        msj:'Delete category',
+        // data: data,
+        id: id
     })
 };
+
+
+
+
+
 
 export { getCategory, postCategory, putcategory, deleteCategory};   

@@ -2,7 +2,7 @@
 
 import CategoryModel from "../models/categories.model.js";
 
-const insertcategory = async ( newCategory ) => {
+const dbCreateCategory = async ( newCategory ) => {
 
     return await CategoryModel.create( newCategory );
 };
@@ -12,7 +12,13 @@ const dbGetCategory = async () => {
     return await CategoryModel.find();
 }; 
 
+const dbDeleteCategory = async ( id ) => {
+
+    return await CategoryModel.findByIdAndDelete( id );
+}
+
 export { 
-    insertcategory,
-    dbGetCategory
+    dbCreateCategory,
+    dbGetCategory,
+    dbDeleteCategory
 };

@@ -13,11 +13,6 @@ const CategorySchema = new Schema({
         type: Boolean,
         default: true
     },
-    // createDate: {
-    // type: Date,
-    // default: Date.now
-    // }
-
 },{
     versionKey: false,
     timestamps: true  

@@ -18,12 +18,13 @@ app.get(`/health`, (req, res) => {
         msj: "sitio corriendo"
     })
 })
-//endpoint para probar rutas
-app.use('/user', userRoutes);
+
 
 app.use( express.json() );  //Habilitamos la interceptación de objetos JSon
 
 
+//endpoint para probar rutas
+app.use('/user', userRoutes);
 app.use('/categories', categoryRoutes);
 
 

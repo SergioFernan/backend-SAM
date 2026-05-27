@@ -10,6 +10,6 @@ import { deleteCategory, getCategory, postCategory, putcategory } from "../contr
 app.get('/', getCategory);
 app.post('/', postCategory);
 app.put('/', putcategory);
-app.delete('/', deleteCategory);
+app.delete('/:id', deleteCategory);
 
 export default app;
