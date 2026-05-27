@@ -17,10 +17,15 @@ const dbDeleteCategory = async ( id ) => {
     return await CategoryModel.findByIdAndDelete( id );
 };
 
-// const db
+const dbUpDateCategory = async ( id, inputData ) => {
+    console.log({ id, inputData})
+    return await CategoryModel.findByIdAndUpdate( id, inputData, {new: true})
+}
+
 
 export { 
     dbCreateCategory,
     dbGetCategory,
-    dbDeleteCategory
+    dbDeleteCategory, 
+    dbUpDateCategory
 };

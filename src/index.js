@@ -11,6 +11,9 @@ const app = express();
 
 dbConection();//llamamos a la funcion para conectar con la base de datos
 
+
+app.use( express.json() );  //Habilitamos la interceptación de objetos JSon
+
 const port = 3000;
 
 app.get(`/health`, (req, res) => {
@@ -20,7 +23,6 @@ app.get(`/health`, (req, res) => {
 })
 
 
-app.use( express.json() );  //Habilitamos la interceptación de objetos JSon
 
 
 //endpoint para probar rutas
