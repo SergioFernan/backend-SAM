@@ -1,5 +1,5 @@
 import { UserModel } from "../models/User.model.js";
-import { dbGetUsers, dbCreateUser, dbDeleteUser } from "../services/user.service.js";
+import { dbGetUsers, dbCreateUser, dbDeleteUser, dbUpdateUser } from "../services/user.service.js";
 
 // function que se llama a user.routes.js para ejecutarse
 async function getUsers(req, res) {
@@ -35,10 +35,15 @@ async function postUsers(req, res) {
     }
 }
 
-function putUsers(req, res) {
+async function updateUsers(req, res) {
+    const id = req.params.id; // encuentra el id por params para actualizar el usuario
+    const inputData = req.body; // obtiene el objeto con los datos a actualizar por body
+    const data = await dbUpdateUser(id, inputData);
     res.json({
-        msj: `actualzar usuario`
+        msj: `actualizar usuario`,
+        data: data
     })
+     // busca el id en la base de datos y actualiza con el objeto recibido por body, new:true devuelve el objeto actualizado
 }
 
 async function deleteUser(req, res) {
@@ -57,4 +62,4 @@ async function deleteUser(req, res) {
     }
 }
 
-export { getUsers, postUsers, putUsers, deleteUser };
+export { getUsers, postUsers, updateUsers, deleteUser };

@@ -12,7 +12,7 @@ const UserSchema = new Schema({
         unique: true,// No permite correos duplicados en la base de datos
         lowercase: true, // pasa a minuscula
         trim: true,
-        match: [/.+\@.+\..+/, "Por favor, ingresa un correo válido"]
+        // match: [/.+\@.+\..+/, "Por favor, ingresa un correo válido"]
     },
     password: {
         type: String,
