@@ -7,5 +7,8 @@ const dbCreateUser = async (newUser) => {
 const dbGetUsers = async () => {
     return await UserModel.find(); // busco usuarios
 }
+const dbDeleteUser = async (id) => {
+    return await UserModel.findOneAndDelete({ _id: id }); // busco el id en la base de datos y lo borro
+}
 
-export { dbCreateUser, dbGetUsers };
+export { dbCreateUser, dbGetUsers, dbDeleteUser };

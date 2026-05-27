@@ -1,5 +1,5 @@
 import { UserModel } from "../models/User.model.js";
-import { dbGetUsers, dbCreateUser } from "../services/user.service.js";
+import { dbGetUsers, dbCreateUser, dbDeleteUser } from "../services/user.service.js";
 
 // function que se llama a user.routes.js para ejecutarse
 async function getUsers(req, res) {
@@ -41,10 +41,20 @@ function putUsers(req, res) {
     })
 }
 
-function deleteUser(req, res) {
-    res.json({
-        msj: `borrar usuario`
-    })
+async function deleteUser(req, res) {
+    try {
+        const id = req.params.id; // recibe el id por params
+        const data = await dbDeleteUser(id); // busca el id en la base de datos y lo borra
+        res.json({
+            msj: `borrar usuario`,
+            data: data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al borrar usuario`
+        })
+    }
 }
 
 export { getUsers, postUsers, putUsers, deleteUser };

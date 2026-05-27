@@ -8,6 +8,6 @@ const app = Router();
 app.get(`/`, getUsers)
 app.post(`/`, postUsers)
 app.put(`/`, putUsers)
-app.delete(`/`, deleteUser)
+app.delete(`/:id`, deleteUser)
 
 export default app;
