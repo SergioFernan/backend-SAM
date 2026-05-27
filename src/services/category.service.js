@@ -15,7 +15,9 @@ const dbGetCategory = async () => {
 const dbDeleteCategory = async ( id ) => {
 
     return await CategoryModel.findByIdAndDelete( id );
-}
+};
+
+// const db
 
 export { 
     dbCreateCategory,

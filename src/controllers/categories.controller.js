@@ -19,8 +19,8 @@ const getCategory = async ( req, res ) => {
 
         res.status(500).json({
             msg: 'No se pudieron obtener las categorias'
-        })
-    }
+        });
+    };
 };
 
 
@@ -35,13 +35,12 @@ const postCategory = async ( req, res ) => {   //La función tiene que ser async
     const inputData = req.body;
 
     //Registra usando el Modelo y guarda la respuesta en la cosntatnte data:
-
     const data = await dbCreateCategory ( inputData );
    
     //Respondemos al cliente enviando los datos registrados
     res.status(201).json({
         data: data
-    })
+    });
 
     } catch ( error ) {
 
@@ -50,16 +49,18 @@ const postCategory = async ( req, res ) => {   //La función tiene que ser async
             // Respondemos al ususario enciando un mensaje humano 
         res.status(500).json({
             msg: 'No se pudo registrar la categoría'   
-        })
-    }
+        });
+    };
 };
+
+
 
 
 const putcategory = ( req, res ) => {
 
     res.json({
         msj:'Update category'
-    })
+    });
 };
 
 
@@ -68,15 +69,26 @@ const putcategory = ( req, res ) => {
 
 const deleteCategory = async ( req, res ) => {
 
+    try {
+
     const id = req.params.id;
 
     const data = await dbDeleteCategory( id );
 
-    res.json({
+    res.status(200).json({
         msj:'Delete category',
         // data: data,
         id: id
-    })
+    });
+
+    } catch (error) {
+
+        console.error( error );
+
+        res.status(500).json({
+            msg: 'No se pudo borrar la categoria'
+        });        
+    };
 };
 
 
