@@ -44,6 +44,11 @@ async function getUserById(req, res) {
             })
         }
         const data = await dbGetUserById(id);
+        if(!data) {  // si no encuentra el id en la base de datos devuelve un error 404
+            return res.status(404).json({
+                msj: `no se encuentra registro de ese usuario`
+            })
+        }
         res.json({
             msj: `obtener usuario por id`,
             data: data
@@ -62,6 +67,9 @@ async function updateUsers(req, res) {
         const id = req.params.id; // encuentra el id por params para actualizar el usuario
         const inputData = req.body; // obtiene el objeto con los datos a actualizar por body
         const data = await dbUpdateUser(id, inputData);
+        if(!data) { // me invento un error para que si no encuentra el id en la base de datos devuelva un error 404
+            throw new Error(`no se encuentra registro de ese usuario para actualizar`)
+        }
         res.json({
             msj: `actualizar usuario`,
             data: data
@@ -71,6 +79,11 @@ async function updateUsers(req, res) {
         if (error.name === 'CastError') {
             return res.status(400).json({
                 msj: `id no válido`
+            })
+        }
+        if (error.message.includes('no se encuentra registro de ese usuario para actualizar')) {
+            return res.status(404).json({
+                msj: error.message
             })
         }
         res.status(500).json({
@@ -89,6 +102,11 @@ async function deleteUser(req, res) {
             })
         }
         const data = await dbDeleteUser(id); // busca el id en la base de datos y lo borra
+        if(!data) {
+            return res.status(404).json({
+                msj: `no se encuentra registro de ese usuario para borrar`
+            })
+        }
         res.json({
             msj: `borrar usuario`,
             data: data
