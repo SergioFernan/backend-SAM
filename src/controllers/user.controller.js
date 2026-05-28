@@ -29,6 +29,12 @@ async function postUsers(req, res) {
 
     } catch (error) {
         console.error(error);
+        if (error.code === 11000) { // error de clave duplicada
+            return res.status(400).json({
+                msj: `error de valicacion por duplicidad de correo`
+
+            })
+        }
         res.status(500).json({
             msj: `error al crear usuario`
         })
