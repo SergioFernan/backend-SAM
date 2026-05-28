@@ -2,30 +2,36 @@
 
 import CategoryModel from "../models/categories.model.js";
 
-const dbCreateCategory = async ( newCategory ) => {
+const dbCreateCategory = async (newCategory) => {
 
-    return await CategoryModel.create( newCategory );
+    return await CategoryModel.create(newCategory);
 };
 
 const dbGetCategory = async () => {
 
     return await CategoryModel.find();
-}; 
-
-const dbDeleteCategory = async ( id ) => {
-
-    return await CategoryModel.findByIdAndDelete( id );
 };
 
-const dbUpDateCategory = async ( id, inputData ) => {
-    console.log({ id, inputData})
-    return await CategoryModel.findByIdAndUpdate( id, inputData, {new: true})
-}
+const dbDeleteCategory = async (id) => {
+
+    return await CategoryModel.findByIdAndDelete(id);
+};
+
+const dbGetCategoryById = async ( id ) => {
+
+    return await CategoryModel.findOne({_id: id});
+};
+
+const dbUpDateCategory = async (id, inputData) => {
+    console.log({ id, inputData })
+    return await CategoryModel.findByIdAndUpdate(id, inputData, { new: true })
+};
 
 
-export { 
+export {
     dbCreateCategory,
     dbGetCategory,
-    dbDeleteCategory, 
-    dbUpDateCategory
+    dbDeleteCategory,
+    dbUpDateCategory,
+    dbGetCategoryById
 };
