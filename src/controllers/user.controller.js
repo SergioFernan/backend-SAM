@@ -1,6 +1,6 @@
 import { UserModel } from "../models/User.model.js";
 import { dbGetUsers, dbCreateUser, dbDeleteUser, dbUpdateUser, dbGetUserById } from "../services/user.service.js";
-
+import mongoose from "mongoose";
 // function que se llama a user.routes.js para ejecutarse
 async function getUsers(req, res) {
     try {
@@ -38,6 +38,11 @@ async function postUsers(req, res) {
 async function getUserById(req, res) {
     try {
         const id = req.params.id; // recibe el id por params
+        if(! mongoose.Types.ObjectId.isValid(id)) { // valida que el id sea un ObjectId válido
+            return res.status(400).json({
+                msj: `id no válido`
+            })
+        }
         const data = await dbGetUserById(id);
         res.json({
             msj: `obtener usuario por id`,
@@ -53,19 +58,36 @@ async function getUserById(req, res) {
 }
 
 async function updateUsers(req, res) {
-    const id = req.params.id; // encuentra el id por params para actualizar el usuario
-    const inputData = req.body; // obtiene el objeto con los datos a actualizar por body
-    const data = await dbUpdateUser(id, inputData);
-    res.json({
-        msj: `actualizar usuario`,
-        data: data
-    })
+    try {
+        const id = req.params.id; // encuentra el id por params para actualizar el usuario
+        const inputData = req.body; // obtiene el objeto con los datos a actualizar por body
+        const data = await dbUpdateUser(id, inputData);
+        res.json({
+            msj: `actualizar usuario`,
+            data: data
+        })
+    } catch (error) {
+        console.error(error);
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                msj: `id no válido`
+            })
+        }
+        res.status(500).json({
+            msj: `error al actualizar usuario`
+        })
+    }
     // busca el id en la base de datos y actualiza con el objeto recibido por body, new:true devuelve el objeto actualizado
 }
 
 async function deleteUser(req, res) {
     try {
         const id = req.params.id; // recibe el id por params
+        if(! mongoose.Types.ObjectId.isValid(id)) { // valida que el id sea un ObjectId válido
+            return res.status(400).json({
+                msj: `id no válido`
+            })
+        }
         const data = await dbDeleteUser(id); // busca el id en la base de datos y lo borra
         res.json({
             msj: `borrar usuario`,
