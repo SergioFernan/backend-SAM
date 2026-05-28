@@ -1,5 +1,5 @@
 import { UserModel } from "../models/User.model.js";
-import { dbGetUsers, dbCreateUser, dbDeleteUser, dbUpdateUser } from "../services/user.service.js";
+import { dbGetUsers, dbCreateUser, dbDeleteUser, dbUpdateUser, dbGetUserById } from "../services/user.service.js";
 
 // function que se llama a user.routes.js para ejecutarse
 async function getUsers(req, res) {
@@ -35,6 +35,23 @@ async function postUsers(req, res) {
     }
 }
 
+async function getUserById(req, res) {
+    try {
+        const id = req.params.id; // recibe el id por params
+        const data = await dbGetUserById(id);
+        res.json({
+            msj: `obtener usuario por id`,
+            data: data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al obtener usuario por id`
+        })
+    }
+    // busca el id en la base de datos y devuelve el objeto    
+}
+
 async function updateUsers(req, res) {
     const id = req.params.id; // encuentra el id por params para actualizar el usuario
     const inputData = req.body; // obtiene el objeto con los datos a actualizar por body
@@ -43,7 +60,7 @@ async function updateUsers(req, res) {
         msj: `actualizar usuario`,
         data: data
     })
-     // busca el id en la base de datos y actualiza con el objeto recibido por body, new:true devuelve el objeto actualizado
+    // busca el id en la base de datos y actualiza con el objeto recibido por body, new:true devuelve el objeto actualizado
 }
 
 async function deleteUser(req, res) {
@@ -62,4 +79,4 @@ async function deleteUser(req, res) {
     }
 }
 
-export { getUsers, postUsers, updateUsers, deleteUser };
+export { getUsers, postUsers, updateUsers, deleteUser, getUserById };
