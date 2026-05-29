@@ -26,7 +26,7 @@ const getCategory = async (req, res) => {
 
 
 
-const postCategory = async (req, res) => {   //La función tiene que ser async 
+const postCategory = async (req, res) => {      //La función tiene que ser async 
 
     try {
 
