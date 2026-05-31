@@ -3,6 +3,7 @@ import CategoryModel from "../models/categories.model.js";
 import { dbCreateCategory, dbDeleteCategory, dbGetCategory, dbUpDateCategory, dbGetCategoryById } from "../services/category.service.js";
 
 
+
 const getCategory = async (req, res) => {
 
     try {
@@ -24,7 +25,7 @@ const getCategory = async (req, res) => {
 };
 
 
-
+ 
 
 const postCategory = async (req, res) => {      //La función tiene que ser async 
 
@@ -43,21 +44,18 @@ const postCategory = async (req, res) => {      //La función tiene que ser asyn
 
     } catch (error) {
 
-        
-        
         console.error( error.code );  //Mensaje en la consola para el desarrollador 
 
         //Validamos si la propiedad tiene un valor único
         if( error.code === 11000 ) {
             return res.json({
                 msg: 'Error: Esa categoria ya existe.'
-            });
-            
+            });     
         };
 
         // Respondemos al ususario enciando un mensaje humano 
         res.status(500).json({
-            msg: 'No se pudo registrar la categoría'
+            msg: 'No se pudo registrar la categoría.'
         });
     };
 };
@@ -73,7 +71,7 @@ const getCategoryById = async (req, res) => {
 
         // La validación defensiva va dentro del TRY ( condicionamos previo a que ocurrea el error ) 
 
-        if (!mongoose.Types.objectiD.isValid(id)) {      // --> En este campo se importa mongoose
+        if (!mongoose.Types.objectId.isValid(id)) {      // --> En este campo se importa mongoose
 
             return res.status(400).json({
                 msg: 'Error Id: No se encontró la categoría.'
@@ -100,9 +98,8 @@ const getCategoryById = async (req, res) => {
         /// Si la exepción va dentro del CATCH es ( esta opción genera más control sobre el error )
 
         res.status(500).json({
-            msg: 'ERROR: No se encontró el Id del producto'
+            msg: 'Error: No se encontró el Id del producto.'
         });
-
     };
 };
 
@@ -118,12 +115,10 @@ const patchCategory = async (req, res) => {
 
         const data = await dbUpDateCategory(id, inputData)
 
-
         res.status(200).json({
-            msj: 'Update category',
+            msg: 'Update category',
             data: data
         });
-
 
     } catch (error) {
         console.error(error);
@@ -133,17 +128,14 @@ const patchCategory = async (req, res) => {
         if (error.name === 'CastError') {
 
             return res.status(400).json({
-                msg: 'Error Id: No se epudo actualizar'
+                msg: 'Error Id: No se pudo actualizar'
             });
         };
 
         res.status(500).json({
             msg: 'No se pudo actualizar la información'
-        })
-
-
-
-    }
+        });
+    };
 };
 
 
@@ -172,8 +164,8 @@ const deleteCategory = async (req, res) => {
         };
 
         res.status(200).json({
-            msj: 'Delete category',
-            // data: data,
+            msg: 'Delete category',
+            data: data,
             id: id
         });
 

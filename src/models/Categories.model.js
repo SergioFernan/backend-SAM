@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 // 1ra parte: Definir el esquema
 
 const CategorySchema = new Schema({
+    
     name: {
         type: String,
         required: true,
@@ -11,7 +12,7 @@ const CategorySchema = new Schema({
     description: String,
     location: {
         type: String,
-        required: true,
+        required: true, 
         trim: true
     },
     status: {
