@@ -73,9 +73,6 @@ async function updateUsers(req, res) {
         const id = req.params.id; // encuentra el id por params para actualizar el usuario
         const inputData = req.body; // obtiene el objeto con los datos a actualizar por body
         const data = await dbUpdateUser(id, inputData);
-        if(!data) { // me invento un error para que si no encuentra el id en la base de datos devuelva un error 404
-            throw new Error(`no se encuentra registro de ese usuario para actualizar`)
-        }
         res.json({
             msj: `actualizar usuario`,
             data: data
