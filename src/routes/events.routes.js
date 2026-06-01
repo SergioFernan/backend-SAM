@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { deleteEvents, getEvents, postEvents, putEvents } from "../controllers/events.controller.js";
+import { getEvents, getEvent, postEvents, updateEvents, deleteEvent } from "../controllers/events.controller.js";
 
-const router = Router();
+const app = Router();
 
-//definicion de las rutas de user
-// rutea desde ../controllers/user.controller.js la funcion con el json
-router.get("/", getEvents );
-router.post("/", postEvents);
-router.put("/", putEvents);
-router.delete("/", deleteEvents);
+app.get(`/`, getEvents);
+app.get(`/:id`, getEvent);
+app.post(`/`, postEvents);
+app.patch(`/:id`, updateEvents);
+app.delete(`/:id`, deleteEvent);
 
-export default router;
+export default app;

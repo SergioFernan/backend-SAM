@@ -1,6 +1,5 @@
 import { Schema , model } from "mongoose";
 
-// 1. Definir esquema
 const EventSchema = new Schema({
     name: {
         type: String,
@@ -27,16 +26,30 @@ const EventSchema = new Schema({
     CreatedDate: { 
         type: Date,
         default: Date
+    },
+
+    date: {
+        type: Date,
+        required: true
+    },
+
+    imageUrl: {
+        type: String
+    },
+
+    category: {
+        type: String,
+        enum: ["concierto", "Rave", "otro"],
+        default: "otro"
     }
 
 
 }, {
-    versionKey: false,
+    versionKey: false,  
     timestamps: true
 });
 
 
-// 2. Definir el modelo
 const EventModel = model (`Events`, EventSchema );
 
 
