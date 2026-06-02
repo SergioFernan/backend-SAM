@@ -1,0 +1,86 @@
+import { dbGetEvents, dbGetEventById, dbCreateEvent, dbDeleteEvent, dbUpdateEvent } from "../services/events.services.js";
+
+async function getEvents(req, res) {
+    try {
+        const data = await dbGetEvents();
+        res.status(200).json({
+            msj: `obtener eventos`,
+            data: data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al obtener eventos`
+        });
+    }
+}
+
+async function getEvent(req, res) {
+    try {
+        const { id } = req.params;
+        const data = await dbGetEventById(id);
+        if (!data) {
+            return res.status(404).json({ msj: "evento no encontrado" });
+        }
+        res.status(200).json({
+            msj: `obtener evento`,
+            data: data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al obtener evento`
+        });
+    }
+}
+
+async function postEvents(req, res) {
+    try {
+        const inputData = req.body;
+        const data = await dbCreateEvent(inputData);
+        res.status(201).json({
+            msj: `evento creado`,
+            data: data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al crear evento`
+        })
+    }
+}
+
+async function updateEvents(req, res) {
+    try {
+        const id = req.params.id;
+        const inputData = req.body;
+        const data = await dbUpdateEvent(id, inputData);
+        res.json({
+            msj: `actualizar evento`,
+            data: data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al actualizar evento`
+        })
+    }
+}
+
+async function deleteEvent(req, res) {
+    try {
+        const id = req.params.id;
+        const data = await dbDeleteEvent(id);
+        res.json({
+            msj: `borrar evento`,
+            data: data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msj: `error al borrar evento`
+        })
+    }
+}
+
+export { getEvents, getEvent, postEvents, updateEvents, deleteEvent };

@@ -5,8 +5,8 @@
   "license": "ISC",
   "author": "Sergio Ivan Fernandez Galeano <sercolgi1@gmail.com>  ",
   "contributors": [
-    "Juan David Vivas Vega",
-    "Andres Felipe Barrera Valbuena"
+    "Alejandro Forero",
+    "Mateo Alzate"
   ],
   "type": "module",
   "main": "index.js",
@@ -16,6 +16,6 @@
   },
   "dependencies": {
     "express": "^5.2.1",
-    "mongoose": "^9.6.2"
+    "mongoose": "^9.6.3"
   }
 }
