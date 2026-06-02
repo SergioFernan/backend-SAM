@@ -3,12 +3,12 @@ import { Schema, model } from "mongoose";
 const UserSchema = new Schema({
     name: {
         type: String,
-        required: true,
+        default: ``,
         trim: true, //para que no haya espacios al principipo y al final
     },
     email: {
         type: String,
-        required: true,
+        required: [true, `El correo es obligatorio`], // el campo es obligatorio
         unique: true,// No permite correos duplicados en la base de datos
         lowercase: true, // pasa a minuscula
         trim: true,
