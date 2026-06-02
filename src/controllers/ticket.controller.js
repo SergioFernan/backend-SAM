@@ -1,4 +1,4 @@
-import { mongoose } from "mmogoose";
+import { mongoose } from "mongoose";
 import TicketModel from "../models/ticket.model.js";
 import { dbCreateTicket, dbDeleteTicket, dbGetTicket, dbUpDateTicket, dbGetTicketById } from "../services/ticket.services.js";
 

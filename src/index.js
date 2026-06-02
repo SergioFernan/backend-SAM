@@ -9,7 +9,7 @@ import ticketRoutes from './routes/ticket.routes.js';
 
 const app = express();
 
-dbConection();//llamamos a la funcion para conectar con la base de datos
+dbConection();            //llamamos a la funcion para conectar con la base de datos
 
 
 app.use(express.json());  //Habilitamos la interceptación de objetos JSon
@@ -26,7 +26,7 @@ app.get(`/health`, (req, res) => {
 //endpoint para probar rutas
 app.use('/user', userRoutes);
 app.use('/categories', categoryRoutes);
-app.user('/tickets', ticketRoutes);
+app.use('/tickets', ticketRoutes);
 
 
 //lanzar el servidor

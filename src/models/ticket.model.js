@@ -6,14 +6,23 @@ const TicketSchema = new Schema({
         type: String,
         required: true,
     },
+    price: {
+        type: String,
+        default: 0,
+
+    },
     description: {
         type: String,
         required: true,
     },
     status: {
         type: String,
-        required: "Pendiente",
-        enum: ["Comrada", "Cancelada"]
+        default: "Disponible",
+        enum: ["Comprada", "Cancelada", "agotada", "Pendiente"]
+    },
+    stock: {
+        type: String,
+        default: 1i        
     }
 },{
 
