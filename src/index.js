@@ -1,6 +1,7 @@
 import express from "express";
 import eventsRoutes from "./routes/events.routes.js"
 import locationsRoutes from "./routes/location.routes.js"
+import userRoutes from "./routes/user.routes.js"
 
 import { dbConection } from "./config/mongo.config.js";
 
@@ -23,6 +24,7 @@ app.get(`/health`, (req, res) => {
 
 app.use('/events', eventsRoutes );
 app.use('/locations', locationsRoutes );
+app.use('/users', userRoutes );
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

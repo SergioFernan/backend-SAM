@@ -5,11 +5,11 @@ const dbCreateLocation = async (newLocation) => {
 }
 
 const dbGetLocations = async () => {
-    return await LocationModel.find();
+    return await LocationModel.find({}).populate(['ownerUserId', 'registerUserId'], "name email role");
 }
 
 const dbGetLocationById = async (id) => {
-    return await LocationModel.findById(id);
+    return await LocationModel.findById(id).populate(['ownerUserId', 'registerUserId'], "name email role");
 }
 
 const dbDeleteLocation = async (id) => {

@@ -20,6 +20,16 @@ const LocationSchema = new Schema({
     status: {
         type: Boolean,
         default: true
+    },
+    ownerUserId: {  
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+    registerUserId: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
     }
 }, {
     versionKey: false,

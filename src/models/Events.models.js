@@ -23,12 +23,12 @@ const EventSchema = new Schema({
         default: true
     },
 
-    CreatedDate: { 
+    initialDate: { 
         type: Date,
-        default: Date
+        required: true
     },
 
-    date: {
+    finalDate: {
         type: Date,
         required: true
     },
@@ -38,9 +38,9 @@ const EventSchema = new Schema({
     },
 
     category: {
-        type: String,
-        enum: ["concierto", "Rave", "otro"],
-        default: "otro"
+        type: Schema.Types.ObjectId,
+        ref: 'categories',
+        required: true
     }
 
 

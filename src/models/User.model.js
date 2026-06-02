@@ -37,6 +37,6 @@ const UserSchema = new Schema({
 // definir el modelo
 // `users` define el nombre del objeto creado con este schema
 // UserSchema es la estructura que se va a usar para crear el objeto
-const UserModel = model(`users`, UserSchema);
+const UserModel = model('users', UserSchema);
 
 export { UserModel };
