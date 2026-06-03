@@ -1,6 +1,9 @@
 import { UserModel } from "../models/User.model.js";
 import { dbGetUsers, dbCreateUser, dbDeleteUser, dbUpdateUser, dbGetUserById } from "../services/user.service.js";
 import mongoose from "mongoose";
+import encryptPassword from "../helpers/bcrypt.helper.js";
+
+
 // function que se llama a user.routes.js para ejecutarse
 async function getUsers(req, res) {
     try {
@@ -19,8 +22,9 @@ async function getUsers(req, res) {
 
 async function postUsers(req, res) {
 
-    try {
+    try {    
         const inputData = req.body; // recibe el body
+        inputData.password = encryptPassword(inputData.password); // encripta la contraseña antes de guardarla en la base de datos
         const data = await dbCreateUser(inputData) // llama a la funcion insertUser de product.service.js para crear usuario
         res.status(201).json({
             msj: `usuario creado`,

@@ -4,6 +4,10 @@ const dbCreateUser = async (newUser) => {
     return await UserModel.create(newUser); // creo usuario
 }
 
+const dbGetUserByEmail = async (email) => {
+    return await UserModel.findOne({ email: email.toLowerCase() }); // busca usuario por email
+}
+
 const dbGetUsers = async () => {
     return await UserModel.find(); // busco usuarios
 }
