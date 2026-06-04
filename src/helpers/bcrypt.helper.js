@@ -1,16 +1,24 @@
-import {genSaltSync, hashSync} from "bcrypt";
+import { compareSync, genSaltSync, hashSync } from "bcrypt";
 
 const encryptPassword = (originalPassword) => {
-  // Paso 1: Generar una cadena de caracteres aleatoria (salt) para agregar seguridad a la contraseña
-  const salt = genSaltSync(4);
-  
-  // Paso 2: Combinar la contraseña original con el salt y aplicar un algoritmo de hash para obtener la contraseña cifrada
-  const hashPassword = hashSync(
-      originalPassword, // password original que se desea cifrar
-      salt);  // salt generado en el paso anterior
-  
-  // Paso 3: Retornar la contraseña cifrada
-  return hashPassword;
+  try {
+    const salt = genSaltSync(4);
+    const hashPassword = hashSync(originalPassword, salt);
+    return hashPassword;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };
 
-export default encryptPassword;
+const validatepassword = (originalPassword, hashPassword) => {
+  try {
+    const isValid = compareSync(originalPassword, hashPassword);
+    return isValid;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export { encryptPassword, validatepassword };

@@ -25,4 +25,4 @@ const dbUpdateUser = async (id, inputData) => {
     ) 
 }
 
-export { dbCreateUser, dbGetUsers, dbDeleteUser, dbGetUserById, dbUpdateUser };
+export { dbCreateUser, dbGetUsers, dbDeleteUser, dbGetUserById, dbUpdateUser, dbGetUserByEmail };
