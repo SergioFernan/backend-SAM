@@ -14,13 +14,17 @@ const dbGetUserById = async (id) => { // busca el id en la base de datos y devue
     return await UserModel.findOne({ _id: id }); // busca el id en la base de datos y devuelve el objeto
 }
 const dbUpdateUser = async (id, inputData) => { // busca el id en la base de datos y actualiza con el objeto recibido por body
-    const data = await UserModel.findOneAndUpdate(
-        { _id: id },  // busca el id en la base de datos
+    return await UserModel.findOneAndUpdate(
+        { _id: id }, // busca el id en la base de datos
         inputData, // actualiza con el objeto recibido por body
-        { new: true } // devuelve el objeto actualizado
-    ) 
+        { returnDocument: "after",
+            runValidators: true } // devuelve el objeto actualizado, ejecuta las validaciones del modelo al actualizar
+    )
 }
 const dbGetUserByEmail = async (email) => { // busca el email en la base de datos y devuelve el objeto
+    if (!email) { // si no recibe un email devuelve null
+        throw new Error(`email es requerido para buscar usuario`); // lanza un error si no recibe un email
+    }
     return await UserModel.findOne({ email: email.toLowerCase() }); // busca el email en la base de datos y devuelve el objeto
 }
 

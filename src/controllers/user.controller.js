@@ -6,14 +6,23 @@ import mongoose from "mongoose";
 async function getUsers(req, res) {
     try {
         const data = await dbGetUsers();
-        res.status(200).json({
-            msj: `obtener usuarios`,
+        if (data.length === 0) { // si no hay usuarios en la base de datos devuelve un mensaje indicando que no hay usuarios
+            return res.status(404).json({
+                msj: `no hay usuarios registrados`
+            })
+        }
+        res.json({
             data: data
         });
     } catch (error) {
         console.error(error);
+        if(error.message.includes(`no hay usuarios registrados`)) { // si el error es por no haber usuarios registrados devuelve un error 404
+            return res.status(404).json({
+                msj: error.message
+            })
+        }
         res.status(500).json({
-            msj: `error al obtener usuarios`
+            msj: `error al obtener lista de usuarios`
         });
     }
 }
@@ -49,27 +58,26 @@ async function postUsers(req, res) {
 
 async function getUserById(req, res) {
     try {
-        const id = req.params.id; // recibe el id por params
-        if(! mongoose.Types.ObjectId.isValid(id)) { // valida que el id sea un ObjectId válido
-            return res.status(400).json({
-                msj: `id no válido`
-            })
-        }
-        const data = await dbGetUserById(id);
-        if(!data) {  // si no encuentra el id en la base de datos devuelve un error 404
-            return res.status(404).json({
-                msj: `no se encuentra registro de ese usuario`
-            })
+        const {id} = req.params; // recibe el id por params
+        const exxistingUser = await dbGetUserById(id); // busca el id en la base de datos y devuelve el objeto
+        if(!exxistingUser) {  // si no encuentra el id en la base de datos devuelve un error 404
+            throw new Error(`no se encuentra registro de ese usuario`) // lanza un error si no encuentra el id en la base de datos
         }
         res.json({
-            msj: `obtener usuario por id`,
-            data: data
+            data: exxistingUser
         })
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            msj: `error al obtener usuario por id`
-        })
+        if (error.message.includes(`no se encuentra registro de ese usuario`)) { // si el error es por no encontrar el id en la base de datos devuelve un error 404
+            return res.status(404).json({
+                msj: error.message
+            })
+        }
+        if (error.name === 'CastError') { // si el error es por id no válido devuelve un error 400
+            return res.status(400).json({
+                msj: `El formato del ID de usuario provisto es inválido para la base de datos`
+            })
+        }
     }
     // busca el id en la base de datos y devuelve el objeto    
 }
