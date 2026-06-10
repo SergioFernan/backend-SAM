@@ -22,7 +22,9 @@ const loginUser = async (req, res) => {
         _id: userFound._id, // el id del usuario
         name: userFound.name, // el nombre del usuario
         email: userFound.email, // el email del usuario
-        role: userFound.role // el rol del usuario
+        role: userFound.role, // el rol del usuario
+        avatar: userFound.avatar, // el avatar del usuario
+        status: userFound.status // el estado del usuario
     }
     const token = generateToken(payLoad); // genera un token con el payload, la clave secreta y el tiempo de expiración, devuelve el token
     if (!token === null) { // si no se pudo generar el token devuelve un error 500
@@ -56,8 +58,12 @@ catch (error) {
 }
 }
 const renewToken = (req, res) => {
+    const token = req.payLoad; // recibe el payload del token decodificado por el middleware de autenticación, este payload se encuentra en el request
+    const user = req.user; // recibe el objeto del usuario encontrado por el middleware de autenticación, este objeto se encuentra en el request
     res.json({
-        msj: `aqui se renueva el token`
+        msj: `aqui se renueva el token`,
+        payLoad: token,
+        user: user
     })
 }
 export { loginUser, renewToken };

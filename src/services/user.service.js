@@ -25,7 +25,7 @@ const dbGetUserByEmail = async (email) => { // busca el email en la base de dato
     if (!email) { // si no recibe un email devuelve null
         throw new Error(`email es requerido para buscar usuario`); // lanza un error si no recibe un email
     }
-    return await UserModel.findOne({ email: email.toLowerCase() }); // busca el email en la base de datos y devuelve el objeto
+    return await UserModel.findOne({ email: email.toLowerCase(), isActive: true }); // busca el email en la base de datos y devuelve el objeto
 }
 
 export { dbCreateUser, dbGetUsers, dbDeleteUser, dbGetUserById, dbUpdateUser, dbGetUserByEmail };

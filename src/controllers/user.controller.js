@@ -34,8 +34,7 @@ async function postUsers(req, res) {
         inputData.password = encryptPassword(inputData.password); // encripta la contraseña recibida por body
         if(inputData.password === null) { // si la contraseña no se pudo encriptar devuelve un error 500
             throw new Error(`error al encriptar contraseña`)    
-            }
-        inputData.password = password;
+        }
         const data = await dbCreateUser(inputData) // llama a la funcion insertUser de product.service.js para crear usuario
         res.status(201).json({
             msj: `usuario creado`,

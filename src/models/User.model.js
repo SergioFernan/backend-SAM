@@ -24,6 +24,10 @@ const UserSchema = new Schema({
         enum: ["user", "admin"],
         default: "user"
     },
+    avatar: {
+        type: String,
+        default: ``
+    },
     isActive: {
         type: Boolean,
         default: true,
