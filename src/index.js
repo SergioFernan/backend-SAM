@@ -9,6 +9,7 @@ import { dbConection } from "./config/mongo.config.js";
 import userRoutes from "./routes/user.routes.js"
 import categoryRoutes from './routes/categories.routes.js'
 import ticketRoutes from './routes/ticket.routes.js';
+import { authenticationUser } from "./middlewares/authentication.middleware.js";
 
 
 const app = express();
@@ -33,7 +34,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/tickets', ticketRoutes);
 
 app.use('/api/auth', authRoutes)
-app.use('/api/events', eventsRoutes );
+app.use('/api/events',  eventsRoutes );
 app.use('/api/locations', locationsRoutes );
 app.use('/api/users', userRoutes );
 

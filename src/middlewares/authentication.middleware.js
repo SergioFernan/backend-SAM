@@ -36,8 +36,9 @@ const authenticationUser = async (req, res, next) => {
     delete userFoundObj.password; // agrega el objeto del usuario al request para que esté disponible en los controladores
     delete userFoundObj.createdAt; // elimina la propiedad createdAt del objeto para no enviarla en la respuesta
     delete userFoundObj.updatedAt; // elimina la propiedad updatedAt del objeto para no enviarla en la respuesta
+    delete userFoundObj.__v; // elimina la propiedad __v del objeto para no enviarla en la respuesta
     console.log(`soy middleware de autenticación, aquí se debería verificar el token`,payload, userFoundObj);
-    req.payload = userFoundObj; // agrega el objeto del usuario al request para que esté disponible en los controladores
+    req.payload = payload; // agrega el objeto del usuario al request para que esté disponible en los controladores
     req.user = userFoundObj; // agrega el objeto del usuario al request para que esté disponible en los controladores
     
     next();
