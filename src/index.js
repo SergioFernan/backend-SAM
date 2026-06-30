@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from "express";
 
 import eventsRoutes from "./routes/events.routes.js"
@@ -20,7 +21,7 @@ dbConection();            //llamamos a la funcion para conectar con la base de d
 
 app.use(express.json());  //Habilitamos la interceptación de objetos JSon
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get(`/health`, (req, res) => {
     res.json({
