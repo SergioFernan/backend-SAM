@@ -11,6 +11,7 @@ import userRoutes from "./routes/user.routes.js"
 import categoryRoutes from './routes/categories.routes.js'
 import ticketRoutes from './routes/ticket.routes.js';
 import gatewayRoutes from './routes/gateway.routes.js'; // Payment Gateway routes
+import postRoutes from './routes/post.routes.js'; // rutas de publicaciones
 import { authenticationUser } from "./middlewares/authentication.middleware.js";
 
 
@@ -35,6 +36,7 @@ app.get(`/health`, (req, res) => {
 app.use('/api/categories', categoryRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/gateways', gatewayRoutes); // Payment Gateway endpoints
+app.use('/api/posts', postRoutes); // endpoints de publicaciones
 
 app.use('/api/auth', authRoutes)
 app.use('/api/events',  eventsRoutes );
