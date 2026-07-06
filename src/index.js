@@ -10,6 +10,7 @@ import { dbConection } from "./config/mongo.config.js";
 import userRoutes from "./routes/user.routes.js"
 import categoryRoutes from './routes/categories.routes.js'
 import ticketRoutes from './routes/ticket.routes.js';
+import gatewayRoutes from './routes/gateway.routes.js'; // Payment Gateway routes
 import { authenticationUser } from "./middlewares/authentication.middleware.js";
 
 
@@ -33,6 +34,7 @@ app.get(`/health`, (req, res) => {
 //endpoint para probar rutas
 app.use('/api/categories', categoryRoutes);
 app.use('/api/tickets', ticketRoutes);
+app.use('/api/gateways', gatewayRoutes); // Payment Gateway endpoints
 
 app.use('/api/auth', authRoutes)
 app.use('/api/events',  eventsRoutes );
