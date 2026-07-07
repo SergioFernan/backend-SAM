@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from "express";
+import cors from 'cors';
 
 import eventsRoutes from "./routes/events.routes.js"
 import locationsRoutes from "./routes/location.routes.js"
@@ -22,6 +23,7 @@ dbConection();            //llamamos a la funcion para conectar con la base de d
 
 
 app.use(express.json());  //Habilitamos la interceptación de objetos JSon
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 
