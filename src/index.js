@@ -13,7 +13,7 @@ import ticketRoutes from './routes/ticket.routes.js';
 import gatewayRoutes from './routes/gateway.routes.js'; // Payment Gateway routes
 import postRoutes from './routes/post.routes.js'; // rutas de publicaciones
 import { authenticationUser } from "./middlewares/authentication.middleware.js";
-
+import roleRoutes from './routes/roles.routes.js';
 
 const app = express();
 
@@ -39,9 +39,10 @@ app.use('/api/gateways', gatewayRoutes); // Payment Gateway endpoints
 app.use('/api/posts', postRoutes); // endpoints de publicaciones
 
 app.use('/api/auth', authRoutes)
-app.use('/api/events',  eventsRoutes );
-app.use('/api/locations', locationsRoutes );
-app.use('/api/users', userRoutes );
+app.use('/api/events', eventsRoutes);
+app.use('/api/locations', locationsRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/roles', roleRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

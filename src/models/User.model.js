@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { ROLES, ROLES_LIST } from "../config/global.config.js"; // importamos los roles desde la config global
 //definir el esquema
 const UserSchema = new Schema({
     name: {
@@ -21,8 +22,8 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["user", "admin"],
-        default: "user"
+        enum: ROLES_LIST, // usa la lista de roles definida en global.config.js
+        default: ROLES.USER // por defecto el rol es user
     },
     avatar: {
         type: String,
