@@ -41,8 +41,24 @@ const EventSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'categories',
         required: true
-    }
+    },
 
+    eventLocation: {
+        type: String,
+        required: true,
+        trim: true // Quita espacios en blanco innecesarios al inicio y final
+    },
+
+    eventSecret: {
+        type: Boolean,
+        default: false // Por defecto asumimos que NO es secreta
+    },
+
+    eventInformation: {
+        type: String,
+        required: true,
+        trim: true
+    }
 
 }, {
     versionKey: false,  

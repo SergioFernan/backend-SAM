@@ -1,5 +1,5 @@
 import express from "express";
-
+import cors from "cors";
 import eventsRoutes from "./routes/events.routes.js"
 import locationsRoutes from "./routes/location.routes.js"
 import { dbConection } from "./config/mongo.config.js";
@@ -8,12 +8,15 @@ import userRoutes from "./routes/user.routes.js"
 import categoryRoutes from './routes/categories.routes.js'
 import ticketRoutes from './routes/ticket.routes.js';
 import authRoutes from './routes/auth.routes.js';
-
+import roleRoutes from './routes/role.routes.js';
 
 const app = express();
 
 
 dbConection();            //llamamos a la funcion para conectar con la base de datos
+app.use(cors( {
+    //origin: `http://localhost:4200/`
+}));
 
 
 app.use(express.json());  //Habilitamos la interceptación de objetos JSon
@@ -34,6 +37,7 @@ app.use('/api/events', eventsRoutes );
 app.use('/api/locations', locationsRoutes );
 app.use('/api/users', userRoutes );
 app.use('/api/auth', authRoutes );
+app.use('/api/roles', roleRoutes );
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
