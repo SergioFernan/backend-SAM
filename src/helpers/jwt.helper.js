@@ -1,16 +1,15 @@
-import jsonwebtoken from 'jsonwebtoken'; // https://www.npmjs.com/package/jsonwebtoken
+import jwt from 'jsonwebtoken';
 
-const generateToken = ( payLoad ) => {
-    const token = jsonwebtoken.sign(payLoad, process.env.JWT_SECRET || 'miClaveSecreta', { expiresIn: '1h' }); // loguea y genera un token con el payload, la clave secreta/env and expiration time, returns the token
-    return token;
+const generateToken = (payload) => {
+    // 1. Guardamos el resultado de jwt.sign en la variable 'Token'
+    const Token = jwt.sign(
+        payload, // Carga Útil
+        'murcielago', // Semilla (Mejor usar comillas simples)
+        { expiresIn: '1h' } // Configuraciones (Comillas simples)
+    ); 
+
+    // Ahora el return sí cambiará a color rosado porque la variable existe y es accesible
+    return Token; 
 }
-const verifyToken = (token) => {
-    try {
-        const payload = jsonwebtoken.verify(token, process.env.JWT_SECRET || 'miClaveSecreta'); // verifies token with env secret key / default secret, returns payload if valid
-        return payload;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
-export { generateToken, verifyToken };
+
+export { generateToken };

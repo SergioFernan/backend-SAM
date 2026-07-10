@@ -2,39 +2,30 @@ import { encryptPassword } from "../helpers/bcrypt.helper.js";
 import { UserModel } from "../models/User.model.js";
 import { dbGetUsers, dbCreateUser, dbDeleteUser, dbUpdateUser, dbGetUserById } from "../services/user.service.js";
 import mongoose from "mongoose";
+
+
+
 // function que se llama a user.routes.js para ejecutarse
 async function getUsers(req, res) {
     try {
         const data = await dbGetUsers();
-        if (data.length === 0) { // si no hay usuarios en la base de datos devuelve un mensaje indicando que no hay usuarios
-            return res.status(404).json({
-                msj: `no hay usuarios registrados`
-            })
-        }
-        res.json({
+        res.status(200).json({
+            msj: `obtener usuarios`,
             data: data
         });
     } catch (error) {
         console.error(error);
-        if(error.message.includes(`no hay usuarios registrados`)) { // si el error es por no haber usuarios registrados devuelve un error 404
-            return res.status(404).json({
-                msj: error.message
-            })
-        }
         res.status(500).json({
-            msj: `error al obtener lista de usuarios`
+            msj: `error al obtener usuarios`
         });
     }
 }
 
 async function postUsers(req, res) {
 
-    try {
+    try {    
         const inputData = req.body; // recibe el body
-        inputData.password = encryptPassword(inputData.password); // encripta la contraseña recibida por body
-        if(inputData.password === null) { // si la contraseña no se pudo encriptar devuelve un error 500
-            throw new Error(`error al encriptar contraseña`)    
-        }
+        inputData.password = encryptPassword (inputData.password); // encripta la contraseña antes de guardarla en la base de datos
         const data = await dbCreateUser(inputData) // llama a la funcion insertUser de product.service.js para crear usuario
         res.status(201).json({
             msj: `usuario creado`,
@@ -57,26 +48,27 @@ async function postUsers(req, res) {
 
 async function getUserById(req, res) {
     try {
-        const {id} = req.params; // recibe el id por params
-        const exxistingUser = await dbGetUserById(id); // busca el id en la base de datos y devuelve el objeto
-        if(!exxistingUser) {  // si no encuentra el id en la base de datos devuelve un error 404
-            throw new Error(`no se encuentra registro de ese usuario`) // lanza un error si no encuentra el id en la base de datos
+        const id = req.params.id; // recibe el id por params
+        if(! mongoose.Types.ObjectId.isValid(id)) { // valida que el id sea un ObjectId válido
+            return res.status(400).json({
+                msj: `id no válido`
+            })
+        }
+        const data = await dbGetUserById(id);
+        if(!data) {  // si no encuentra el id en la base de datos devuelve un error 404
+            return res.status(404).json({
+                msj: `no se encuentra registro de ese usuario`
+            })
         }
         res.json({
-            data: exxistingUser
+            msj: `obtener usuario por id`,
+            data: data
         })
     } catch (error) {
         console.error(error);
-        if (error.message.includes(`no se encuentra registro de ese usuario`)) { // si el error es por no encontrar el id en la base de datos devuelve un error 404
-            return res.status(404).json({
-                msj: error.message
-            })
-        }
-        if (error.name === 'CastError') { // si el error es por id no válido devuelve un error 400
-            return res.status(400).json({
-                msj: `El formato del ID de usuario provisto es inválido para la base de datos`
-            })
-        }
+        res.status(500).json({
+            msj: `error al obtener usuario por id`
+        })
     }
     // busca el id en la base de datos y devuelve el objeto    
 }

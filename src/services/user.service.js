@@ -1,31 +1,28 @@
 import { UserModel } from "../models/User.model.js"; // importo el modelo de la base de datos
 
-const dbCreateUser = async (newUser) => { // recibe un objeto con los datos del nuevo usuario
+const dbCreateUser = async (newUser) => {
     return await UserModel.create(newUser); // creo usuario
 }
 
-const dbGetUsers = async () => { // busco usuarios
+const dbGetUserByEmail = async (email) => {
+    return await UserModel.findOne({ email: email.toLowerCase() }); // busca usuario por email
+}
+
+const dbGetUsers = async () => {
     return await UserModel.find(); // busco usuarios
 }
-const dbDeleteUser = async (id) => { // busca el id en la base de datos y lo borro
+const dbDeleteUser = async (id) => {
     return await UserModel.findOneAndDelete({ _id: id }); // busco el id en la base de datos y lo borro
 }
-const dbGetUserById = async (id) => { // busca el id en la base de datos y devuelve el objeto
+const dbGetUserById = async (id) => {
     return await UserModel.findOne({ _id: id }); // busca el id en la base de datos y devuelve el objeto
 }
-const dbUpdateUser = async (id, inputData) => { // busca el id en la base de datos y actualiza con el objeto recibido por body
-    return await UserModel.findOneAndUpdate(
-        { _id: id }, // busca el id en la base de datos
+const dbUpdateUser = async (id, inputData) => {
+    const data = await UserModel.findOneAndUpdate(
+        { _id: id },  // busca el id en la base de datos
         inputData, // actualiza con el objeto recibido por body
-        { returnDocument: "after",
-            runValidators: true } // devuelve el objeto actualizado, ejecuta las validaciones del modelo al actualizar
-    )
-}
-const dbGetUserByEmail = async (email) => { // busca el email en la base de datos y devuelve el objeto
-    if (!email) { // si no recibe un email devuelve null
-        throw new Error(`email es requerido para buscar usuario`); // lanza un error si no recibe un email
-    }
-    return await UserModel.findOne({ email: email.toLowerCase(), isActive: true }); // busca el email en la base de datos y devuelve el objeto
+        { new: true } // devuelve el objeto actualizado
+    ) 
 }
 
 export { dbCreateUser, dbGetUsers, dbDeleteUser, dbGetUserById, dbUpdateUser, dbGetUserByEmail };

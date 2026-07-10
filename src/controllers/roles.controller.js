@@ -1,12 +1,11 @@
-import { dbGetRoles } from "../services/role.service.js";
+import { dbGetRoles } from '../services/role.services.js';
 
-// obtiene los roles definidos en la aplicacion
 const getRoles = (req, res) => {
     const roles = dbGetRoles();
-    res.status(200).json({
-        msg: "Roles disponibles en el sistema",
-        data: roles
+
+    res.json({
+        msg: `Obtiene todos los roles definidos para la aplicación`,
+        roles: roles
     });
 };
-
 export default getRoles;

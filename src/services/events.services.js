@@ -1,4 +1,4 @@
-import EventModel from "../models/events.models.js";
+import EventModel from "../models/Events.models.js";
 
 const dbCreateEvent = async (newEvent) => {
     return await EventModel.create(newEvent);

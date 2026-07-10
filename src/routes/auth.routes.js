@@ -1,12 +1,18 @@
-import {Router} from 'express';
-import { postUsers } from '../controllers/user.controller.js';
-import { loginUser, renewToken } from '../controllers/auth.controller.js';
-import { authenticationUser } from '../middlewares/authentication.middleware.js';
+import {Router} from "express";
+import { postUsers } from "../controllers/user.controller.js";
+import { loginUser } from "../controllers/auth.controller.js";
 
-const app = Router();
+const router = Router();
 
-app.post(`/login`, loginUser)
-app.post(`/register`, postUsers)
-app.get(`/renew-token`, authenticationUser, renewToken) // esta ruta es para renovar el token, se le pasa el middleware de autenticación para verificar que el token sea válido antes de renovar el token, si el token es válido se ejecuta la función renewToken, si no es válido devuelve un error 401
+//define las rutas que manejan el flujo de autenticación, como login, registro, etc.
+// login, register, logout, remember password, doble factor authentication, desactivar cuenta, etc.
 
-export default app;
+// /login/
+router.post('/login', loginUser); // ruta para iniciar sesión http://localhost:3000/api/auth/login
+
+
+// /register/
+router.post('/register', postUsers); // registrar un nuevo usuario http://localhost:3000/api/auth/register
+
+
+export default router;
