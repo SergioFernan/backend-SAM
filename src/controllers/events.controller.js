@@ -44,6 +44,17 @@ async function postEvents(req, res) {
         });
     } catch (error) {
         console.error(error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                msj: `error de validación`,
+                errors: Object.values(error.errors).map(e => e.message)
+            });
+        }
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                msj: `valor inválido para el campo '${error.path}'`
+            });
+        }
         res.status(500).json({
             msj: `error al crear evento`
         })
@@ -61,6 +72,17 @@ async function updateEvents(req, res) {
         })
     } catch (error) {
         console.error(error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                msj: `error de validación`,
+                errors: Object.values(error.errors).map(e => e.message)
+            });
+        }
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                msj: `valor inválido para el campo '${error.path}'`
+            });
+        }
         res.status(500).json({
             msj: `error al actualizar evento`
         })

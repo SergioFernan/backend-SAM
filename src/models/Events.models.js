@@ -1,29 +1,35 @@
-import { Schema , model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const EventSchema = new Schema({
+  /*  user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: [true, 'El usuario es obligatorio']
+    },*/
+
     name: {
         type: String,
-        required: true ,
+        required: true,
         trim: true
     },
     description: String,
     price: {
         type: Number,
         default: 0,
-        min: 0, 
+        min: 0,
     },
     stock: {
         type: Number,
         default: 1,
         min: 1
-    } ,
+    },
 
-    status : {
+    status: {
         type: Boolean,
         default: true
     },
 
-    initialDate: { 
+    initialDate: {
         type: Date,
         required: true
     },
@@ -37,11 +43,11 @@ const EventSchema = new Schema({
         type: String
     },
 
-    category: {
+ /*   category: {
         type: Schema.Types.ObjectId,
         ref: 'categories',
         required: true
-    },
+    },*/
 
     eventLocation: {
         type: String,
@@ -61,12 +67,12 @@ const EventSchema = new Schema({
     }
 
 }, {
-    versionKey: false,  
+    versionKey: false,
     timestamps: true
 });
 
 
-const EventModel = model (`Events`, EventSchema );
+const EventModel = model(`Events`, EventSchema);
 
 
 export default EventModel;
