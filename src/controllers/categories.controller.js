@@ -11,7 +11,7 @@ const getCategory = async (req, res) => {
         const data = await dbGetCategory()
 
         res.status(201).json({
-            msj: 'Home, Festivals, Concerts, Clubs',
+            msj: 'Se muestran las categorias',
             data: data
         })
 
@@ -98,7 +98,7 @@ const getCategoryById = async (req, res) => {
         /// Si la exepción va dentro del CATCH es ( esta opción genera más control sobre el error )
 
         res.status(500).json({
-            msg: 'Error: No se encontró el Id del producto.'
+            msg: 'Error: No se encontró el Id de la categoria'
         });
     };
 };

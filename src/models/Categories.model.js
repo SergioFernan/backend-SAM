@@ -10,11 +10,11 @@ const CategorySchema = new Schema({
         trim: true         //Quita los espacios al principio y al final para evitar espacios inecesarios 
     },
     description: String,
-    location: {
-        type: String,
-        required: true, 
-        trim: true
-    },
+    // location: {
+    //     type: String,
+    //     required: true, 
+    //     trim: true
+    // },
     status: {
         type: Boolean,
         default: true

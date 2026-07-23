@@ -17,8 +17,7 @@ const TicketSchema = new Schema({
     },
     status: {
         type: String,
-        default: "Disponible",
-        enum: ["Comprada", "Cancelada", "agotada", "Pendiente"]
+        default: true
     },
     stock: {
         type: Number,
