@@ -44,6 +44,17 @@ const postLocations = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                msj: `error de validación`,
+                errors: Object.values(error.errors).map(e => e.message)
+            });
+        }
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                msj: `valor inválido para el campo '${error.path}'`
+            });
+        }
         res.status(500).json({
             msj: `error al crear lugar`
         })
@@ -55,12 +66,26 @@ const putLocations = async (req, res) => {
         const id = req.params.id;
         const inputData = req.body;
         const data = await dbUpdateLocation(id, inputData);
+        if (!data) {
+            return res.status(404).json({ msj: "lugar no encontrado" });
+        }
         res.json({
             msj: `actualizar lugar`,
             data: data
         })
     } catch (error) {
         console.error(error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                msj: `error de validación`,
+                errors: Object.values(error.errors).map(e => e.message)
+            });
+        }
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                msj: `valor inválido para el campo '${error.path}'`
+            });
+        }
         res.status(500).json({
             msj: `error al actualizar lugar`
         })
@@ -71,6 +96,9 @@ const deleteLocations = async (req, res) => {
     try {
         const id = req.params.id;
         const data = await dbDeleteLocation(id);
+        if (!data) {
+            return res.status(404).json({ msj: "lugar no encontrado" });
+        }
         res.json({
             msj: `borrar lugar`,
             data: data

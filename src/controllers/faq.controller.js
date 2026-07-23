@@ -1,45 +1,45 @@
-import { dbGetEvents, dbGetEventById, dbCreateEvent, dbDeleteEvent, dbUpdateEvent } from "../services/events.services.js";
+import { dbGetFaqs, dbGetFaqById, dbCreateFaq, dbDeleteFaq, dbUpdateFaq } from "../services/faq.services.js";
 
-async function getEvents(req, res) {
+const getFaqs = async (req, res) => {
     try {
-        const data = await dbGetEvents();
+        const data = await dbGetFaqs();
         res.status(200).json({
-            msj: `obtener eventos`,
+            msj: `obtener preguntas frecuentes`,
             data: data
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al obtener eventos`
+            msj: `error al obtener preguntas frecuentes`
         });
     }
 }
 
-async function getEvent(req, res) {
+const getFaq = async (req, res) => {
     try {
         const { id } = req.params;
-        const data = await dbGetEventById(id);
+        const data = await dbGetFaqById(id);
         if (!data) {
-            return res.status(404).json({ msj: "evento no encontrado" });
+            return res.status(404).json({ msj: "pregunta no encontrada" });
         }
         res.status(200).json({
-            msj: `obtener evento`,
+            msj: `obtener pregunta`,
             data: data
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al obtener evento`
+            msj: `error al obtener pregunta`
         });
     }
 }
 
-async function postEvents(req, res) {
+const postFaqs = async (req, res) => {
     try {
         const inputData = req.body;
-        const data = await dbCreateEvent(inputData);
+        const data = await dbCreateFaq(inputData);
         res.status(201).json({
-            msj: `evento creado`,
+            msj: `pregunta creada`,
             data: data
         });
     } catch (error) {
@@ -56,21 +56,21 @@ async function postEvents(req, res) {
             });
         }
         res.status(500).json({
-            msj: `error al crear evento`
+            msj: `error al crear pregunta`
         })
     }
 }
 
-async function updateEvents(req, res) {
+const putFaqs = async (req, res) => {
     try {
         const id = req.params.id;
         const inputData = req.body;
-        const data = await dbUpdateEvent(id, inputData);
+        const data = await dbUpdateFaq(id, inputData);
         if (!data) {
-            return res.status(404).json({ msj: "evento no encontrado" });
+            return res.status(404).json({ msj: "pregunta no encontrada" });
         }
         res.json({
-            msj: `actualizar evento`,
+            msj: `actualizar pregunta`,
             data: data
         })
     } catch (error) {
@@ -87,28 +87,28 @@ async function updateEvents(req, res) {
             });
         }
         res.status(500).json({
-            msj: `error al actualizar evento`
+            msj: `error al actualizar pregunta`
         })
     }
 }
 
-async function deleteEvent(req, res) {
+const deleteFaqs = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await dbDeleteEvent(id);
+        const data = await dbDeleteFaq(id);
         if (!data) {
-            return res.status(404).json({ msj: "evento no encontrado" });
+            return res.status(404).json({ msj: "pregunta no encontrada" });
         }
         res.json({
-            msj: `borrar evento`,
+            msj: `borrar pregunta`,
             data: data
         })
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al borrar evento`
+            msj: `error al borrar pregunta`
         })
     }
 }
 
-export { getEvents, getEvent, postEvents, updateEvents, deleteEvent };
+export { getFaqs, getFaq, postFaqs, putFaqs, deleteFaqs };

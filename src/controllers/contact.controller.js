@@ -1,45 +1,45 @@
-import { dbGetEvents, dbGetEventById, dbCreateEvent, dbDeleteEvent, dbUpdateEvent } from "../services/events.services.js";
+import { dbGetContacts, dbGetContactById, dbCreateContact, dbDeleteContact, dbUpdateContact } from "../services/contact.services.js";
 
-async function getEvents(req, res) {
+const getContacts = async (req, res) => {
     try {
-        const data = await dbGetEvents();
+        const data = await dbGetContacts();
         res.status(200).json({
-            msj: `obtener eventos`,
+            msj: `obtener solicitudes de contacto`,
             data: data
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al obtener eventos`
+            msj: `error al obtener solicitudes de contacto`
         });
     }
 }
 
-async function getEvent(req, res) {
+const getContact = async (req, res) => {
     try {
         const { id } = req.params;
-        const data = await dbGetEventById(id);
+        const data = await dbGetContactById(id);
         if (!data) {
-            return res.status(404).json({ msj: "evento no encontrado" });
+            return res.status(404).json({ msj: "solicitud no encontrada" });
         }
         res.status(200).json({
-            msj: `obtener evento`,
+            msj: `obtener solicitud de contacto`,
             data: data
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al obtener evento`
+            msj: `error al obtener solicitud de contacto`
         });
     }
 }
 
-async function postEvents(req, res) {
+const postContact = async (req, res) => {
     try {
         const inputData = req.body;
-        const data = await dbCreateEvent(inputData);
+        const data = await dbCreateContact(inputData);
         res.status(201).json({
-            msj: `evento creado`,
+            msj: `solicitud de contacto creada`,
             data: data
         });
     } catch (error) {
@@ -56,23 +56,23 @@ async function postEvents(req, res) {
             });
         }
         res.status(500).json({
-            msj: `error al crear evento`
-        })
+            msj: `error al crear solicitud de contacto`
+        });
     }
 }
 
-async function updateEvents(req, res) {
+const putContact = async (req, res) => {
     try {
         const id = req.params.id;
         const inputData = req.body;
-        const data = await dbUpdateEvent(id, inputData);
+        const data = await dbUpdateContact(id, inputData);
         if (!data) {
-            return res.status(404).json({ msj: "evento no encontrado" });
+            return res.status(404).json({ msj: "solicitud no encontrada" });
         }
         res.json({
-            msj: `actualizar evento`,
+            msj: `actualizar solicitud de contacto`,
             data: data
-        })
+        });
     } catch (error) {
         console.error(error);
         if (error.name === 'ValidationError') {
@@ -87,28 +87,28 @@ async function updateEvents(req, res) {
             });
         }
         res.status(500).json({
-            msj: `error al actualizar evento`
-        })
+            msj: `error al actualizar solicitud de contacto`
+        });
     }
 }
 
-async function deleteEvent(req, res) {
+const deleteContact = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await dbDeleteEvent(id);
+        const data = await dbDeleteContact(id);
         if (!data) {
-            return res.status(404).json({ msj: "evento no encontrado" });
+            return res.status(404).json({ msj: "solicitud no encontrada" });
         }
         res.json({
-            msj: `borrar evento`,
+            msj: `borrar solicitud de contacto`,
             data: data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al borrar evento`
-        })
+            msj: `error al borrar solicitud de contacto`
+        });
     }
 }
 
-export { getEvents, getEvent, postEvents, updateEvents, deleteEvent };
+export { getContacts, getContact, postContact, putContact, deleteContact };

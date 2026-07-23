@@ -37,9 +37,19 @@ const EventSchema = new Schema({
         type: String
     },
 
+    location: {
+        type: Schema.Types.ObjectId,
+        ref: 'Locations'
+    },
+
+    customLocation: {
+        type: String,
+        trim: true
+    },
+
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'categories',
+        ref: 'category',
         required: true
     }
 }, {

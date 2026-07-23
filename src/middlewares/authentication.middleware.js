@@ -2,6 +2,7 @@ import { verifyToken } from "../helpers/jwt.helper.js";
 import { dbGetUserByEmail } from "../services/user.service.js";
 
 const authenticationUser = async (req, res, next) => {
+    /*
     // paso 1 recibir el token por header
     const token = req.header(`X-Token`); // recibe el token por header
     if (!token) { // si no recibe un token devuelve un error 401
@@ -40,6 +41,7 @@ const authenticationUser = async (req, res, next) => {
     console.log(`soy middleware de autenticación, aquí se debería verificar el token`,payload, userFoundObj);
     req.payload = payload; // agrega el objeto del usuario al request para que esté disponible en los controladores
     req.user = userFoundObj; // agrega el objeto del usuario al request para que esté disponible en los controladores
+    */
     
     next();
 };
