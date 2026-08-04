@@ -12,4 +12,12 @@ const generateToken = (payload) => {
     return Token; 
 }
 
-export { generateToken };
+const verifyToken = (token) => {
+    try {
+        return jwt.verify(token, 'murcielago');
+    } catch (error) {
+        return null;
+    }
+}
+
+export { generateToken, verifyToken };

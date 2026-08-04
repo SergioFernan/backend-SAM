@@ -1,7 +1,7 @@
-import { ROLE_LABELS, ROLES_LIST } from "../config/global.config.js";
+import { ROLE_LABELS, ALLOWED_ROLES } from "../config/global.config.js";
 
 const dbGetRoles = () => {
-    return ROLES_LIST.map(
+    return ALLOWED_ROLES.map(
         (role) => {
             return {
                 id: role,
