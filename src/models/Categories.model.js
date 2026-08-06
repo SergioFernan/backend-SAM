@@ -12,7 +12,7 @@ const CategorySchema = new Schema({
     description: String,
     location: {
         type: String,
-        required: true, 
+        // required: true, 
         trim: true
     },
     status: {

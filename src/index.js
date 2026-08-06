@@ -21,7 +21,7 @@ app.use(cors( {
 
 app.use(express.json());  //Habilitamos la interceptación de objetos JSon
 
-const port = 3000;
+const port = process.env.port || 3000;
 
 app.get(`/health`, (req, res) => {
     res.json({

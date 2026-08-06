@@ -4,7 +4,7 @@ const generateToken = (payload) => {
     // 1. Guardamos el resultado de jwt.sign en la variable 'Token'
     const Token = jwt.sign(
         payload, // Carga Útil
-        'murcielago', // Semilla (Mejor usar comillas simples)
+        process.env.JWT_SECRET, // Semilla (Mejor usar comillas simples)
         { expiresIn: '1h' } // Configuraciones (Comillas simples)
     ); 
 
@@ -14,7 +14,7 @@ const generateToken = (payload) => {
 
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, 'murcielago');
+        return jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
         return null;
     }

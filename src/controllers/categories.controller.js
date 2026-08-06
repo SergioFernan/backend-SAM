@@ -71,12 +71,12 @@ const getCategoryById = async (req, res) => {
 
         // La validación defensiva va dentro del TRY ( condicionamos previo a que ocurrea el error ) 
 
-        if (!mongoose.Types.objectId.isValid(id)) {      // --> En este campo se importa mongoose
+        // if (!mongoose.Types.objectId.isValid(id)) {      // --> En este campo se importa mongoose
 
-            return res.status(400).json({
-                msg: 'Error Id: No se encontró la categoría.'
-            });
-        };
+        //     return res.status(400).json({
+        //         msg: 'Error Id: No se encontró la categoría.'
+        //     });
+        // };
 
         const data = await dbGetCategoryById(id);
 
