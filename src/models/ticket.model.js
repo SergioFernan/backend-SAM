@@ -6,12 +6,19 @@ const TicketSchema = new Schema({
         type: String,
         required: true,
     },
+    lastname: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
-        default: 0,
-
+        required: true
     },
-    description: {
+    payment: {
         type: String,
         required: true,
     },

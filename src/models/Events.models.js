@@ -12,34 +12,37 @@ const EventSchema = new Schema({
         default: 0,
         min: 0, 
     },
+    localidad: {
+        type: String
+    },
     stock: {
         type: Number,
         default: 1,
         min: 1
-    } ,
-
+    },
     status : {
         type: Boolean,
         default: true
     },
-
     initialDate: { 
         type: Date,
         required: true
     },
-
     finalDate: {
         type: Date,
         required: true
     },
-
     imageUrl: {
-        type: String
+        type: String,   
+        required: true
     },
-
-    category: {
+    city: {
+        type: String,
+        required: true
+    },
+    geners: {
         type: Schema.Types.ObjectId,
-        ref: 'categories',
+        ref: 'geners',
         required: true
     }
 }, {
