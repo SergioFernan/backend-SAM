@@ -1,30 +1,39 @@
-import { Schema , model } from "mongoose";
+import { Schema, model } from "mongoose";
+
+const LocalidadSchema = new Schema({
+    enabled: {
+        type: Boolean,
+        default: false
+    },
+    stock: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    price: {
+        type: Number,
+        default: 0,
+        min: 0
+    }
+}, { _id: false });
 
 const EventSchema = new Schema({
     name: {
         type: String,
-        required: true ,
+        required: true,
         trim: true
     },
-    description: String,
-    price: {
-        type: Number,
-        default: 0,
-        min: 0, 
+    description: {
+        type: String,
+        required: true
     },
-    localidad: {
-        type: String
+    localidades: {
+        general: LocalidadSchema,
+        vip: LocalidadSchema,
+        backstage: LocalidadSchema,
+        palco: LocalidadSchema
     },
-    stock: {
-        type: Number,
-        default: 1,
-        min: 1
-    },
-    status : {
-        type: Boolean,
-        default: true
-    },
-    initialDate: { 
+    initialDate: {
         type: Date,
         required: true
     },
@@ -32,26 +41,23 @@ const EventSchema = new Schema({
         type: Date,
         required: true
     },
-    imageUrl: {
-        type: String,   
-        required: true
-    },
-    city: {
+    category: {
         type: String,
         required: true
     },
-    geners: {
-        type: Schema.Types.ObjectId,
-        ref: 'geners',
+    imageUrl: {
+        type: String,
         required: true
+    },
+    status: {
+        type: Boolean,
+        default: true
     }
 }, {
-    versionKey: false,  
+    versionKey: false,
     timestamps: true
 });
 
-
-const EventModel = model (`Events`, EventSchema );
-
+const EventModel = model('Events', EventSchema);
 
 export default EventModel;

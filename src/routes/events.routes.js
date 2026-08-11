@@ -6,8 +6,8 @@ const app = Router();
 
 app.get(`/`, getEvents);
 app.get(`/:id`, getEvent);
-app.post(`/`, authenticationUser, postEvents);
-app.patch(`/:id`, authenticationUser, updateEvents);
-app.delete(`/:id`, authenticationUser, deleteEvent);
+app.post(`/`, postEvents);
+app.patch(`/:id`, updateEvents);
+app.delete(`/:id`, deleteEvent);
 
 export default app;
