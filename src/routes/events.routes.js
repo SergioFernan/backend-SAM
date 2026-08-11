@@ -5,9 +5,11 @@ import { authenticationUser } from "../middlewares/authentication.middleware.js"
 const app = Router();
 
 app.get(`/`, getEvents);
-app.get(`/:id`, getEventById);
-app.post(`/`, authenticationUser, postEvents);
-app.patch(`/:id`, authenticationUser, updateEvents);
-app.delete(`/:id`, authenticationUser, deleteEvent);
+
+app.get(`/:id`, getEvent);
+app.post(`/`, postEvents);
+app.patch(`/:id`, updateEvents);
+app.delete(`/:id`, deleteEvent);
+
 
 export default app;

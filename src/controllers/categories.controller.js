@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import CategoryModel from "../models/categories.model.js";
+
 import { dbCreateCategory, dbDeleteCategory, dbGetCategory, dbUpDateCategory, dbGetCategoryById } from "../services/category.service.js";
 
 
@@ -25,7 +25,7 @@ const getCategory = async (req, res) => {
 };
 
 
- 
+
 
 const postCategory = async (req, res) => {      //La función tiene que ser async 
 
@@ -44,13 +44,13 @@ const postCategory = async (req, res) => {      //La función tiene que ser asyn
 
     } catch (error) {
 
-        console.error( error.code );  //Mensaje en la consola para el desarrollador 
+        console.error(error.code);  //Mensaje en la consola para el desarrollador 
 
         //Validamos si la propiedad tiene un valor único
-        if( error.code === 11000 ) {
+        if (error.code === 11000) {
             return res.json({
                 msg: 'Error: Esa categoria ya existe.'
-            });     
+            });
         };
 
         // Respondemos al ususario enciando un mensaje humano 
@@ -80,8 +80,8 @@ const getCategoryById = async (req, res) => {
 
         const data = await dbGetCategoryById(id);
 
-        if( ! data ) { 
-            return res.json ({
+        if (!data) {
+            return res.json({
                 msg: 'Error Id: El Id no existe'
             });
         };
@@ -157,8 +157,8 @@ const deleteCategory = async (req, res) => {
 
         const data = await dbDeleteCategory(id);
 
-        if( ! data ) { 
-            return res.json ({
+        if (!data) {
+            return res.json({
                 msg: 'No se puede eliminar una categria que no ha sido registrada'
             });
         };

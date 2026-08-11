@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 import {
-    dbCreateGateway,
-    dbGetGateways,
-    dbGetGatewayById,
-    dbUpdateGateway,
-    dbDeleteGateway,
-} from "../services/gateway.services.js";
+    dbCreateCart,
+    dbGetCarts,
+    dbGetCartById,
+    dbUpdateCart,
+    dbDeleteCart,
+} from "../services/cart.services.js";
 
-// obtener todas las pasarelas
-const getGateways = async (req, res) => {
+// obtener todos los carritos
+const getCarts = async (req, res) => {
     try {
-        const data = await dbGetGateways();
+        const data = await dbGetCarts();
 
         res.status(200).json({
-            msg: "Pasarelas obtenidas correctamente",
+            msg: "Carritos obtenidos correctamente",
             data: data,
         });
 
@@ -21,13 +21,13 @@ const getGateways = async (req, res) => {
         console.error(error);
 
         res.status(500).json({
-            msg: "No se pudieron obtener las pasarelas",
+            msg: "No se pudieron obtener los carritos",
         });
     }
 };
 
-// obtener una pasarela por su id
-const getGatewayById = async (req, res) => {
+// obtener un carrito por su id
+const getCartById = async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -38,17 +38,17 @@ const getGatewayById = async (req, res) => {
             });
         }
 
-        const data = await dbGetGatewayById(id);
+        const data = await dbGetCartById(id);
 
         // si no existe el documento en la base de datos
         if (!data) {
             return res.status(404).json({
-                msg: "Error Id: no se encontro la pasarela con ese id",
+                msg: "Error Id: no se encontro el carrito con ese id",
             });
         }
 
         res.status(200).json({
-            msg: "Pasarela obtenida correctamente",
+            msg: "Carrito obtenido correctamente",
             data: data,
         });
 
@@ -56,41 +56,42 @@ const getGatewayById = async (req, res) => {
         console.error(error);
 
         res.status(500).json({
-            msg: "No se pudo obtener la pasarela",
+            msg: "No se pudo obtener el carrito",
         });
     }
 };
 
-// crear una nueva pasarela
-const postGateway = async (req, res) => {
+// crear un nuevo carrito
+const postCart = async (req, res) => {
     try {
         const inputData = req.body; // datos que vienen del body del request
 
-        const data = await dbCreateGateway(inputData);
+        const data = await dbCreateCart(inputData);
 
         res.status(201).json({
-            msg: "Pasarela creada correctamente",
+            msg: "Carrito creado correctamente",
             data: data,
         });
 
     } catch (error) {
         console.error(error);
 
-        // error 11000 significa que ya existe un documento con ese nombre
+        // error 11000 significa que ya existe un documento unico (ej. carrito para el usuario)
         if (error.code === 11000) {
             return res.status(409).json({
-                msg: "Error: ya existe una pasarela con ese nombre",
+                msg: "Error: ya existe un carrito para este usuario",
             });
         }
 
         res.status(500).json({
-            msg: "No se pudo crear la pasarela",
+            msg: "No se pudo crear el carrito",
+            error: error.message
         });
     }
 };
 
-// actualizar una pasarela por su id
-const patchGateway = async (req, res) => {
+// actualizar un carrito por su id
+const patchCart = async (req, res) => {
     try {
         const id = req.params.id;
         const inputData = req.body; // campos a actualizar
@@ -102,10 +103,10 @@ const patchGateway = async (req, res) => {
             });
         }
 
-        const data = await dbUpdateGateway(id, inputData);
+        const data = await dbUpdateCart(id, inputData);
 
         res.status(200).json({
-            msg: "Pasarela actualizada correctamente",
+            msg: "Carrito actualizado correctamente",
             data: data,
         });
 
@@ -120,13 +121,13 @@ const patchGateway = async (req, res) => {
         }
 
         res.status(500).json({
-            msg: "No se pudo actualizar la pasarela",
+            msg: "No se pudo actualizar el carrito",
         });
     }
 };
 
-// eliminar una pasarela por su id
-const deleteGateway = async (req, res) => {
+// eliminar un carrito por su id
+const deleteCart = async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -137,17 +138,17 @@ const deleteGateway = async (req, res) => {
             });
         }
 
-        const data = await dbDeleteGateway(id);
+        const data = await dbDeleteCart(id);
 
         // si no encontro nada para eliminar
         if (!data) {
             return res.status(404).json({
-                msg: "No se puede eliminar una pasarela que no existe",
+                msg: "No se puede eliminar un carrito que no existe",
             });
         }
 
         res.status(200).json({
-            msg: "Pasarela eliminada correctamente",
+            msg: "Carrito eliminado correctamente",
             data: data,
             id: id,
         });
@@ -156,9 +157,9 @@ const deleteGateway = async (req, res) => {
         console.error(error);
 
         res.status(500).json({
-            msg: "No se pudo eliminar la pasarela",
+            msg: "No se pudo eliminar el carrito",
         });
     }
 };
 
-export { getGateways, getGatewayById, postGateway, patchGateway, deleteGateway };
+export { getCarts, getCartById, postCart, patchCart, deleteCart };
