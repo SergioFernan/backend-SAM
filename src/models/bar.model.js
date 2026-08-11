@@ -7,6 +7,14 @@ const BarSchema = new Schema(
             required: [true, "El nombre del bar o local es obligatorio"],
             trim: true,
         },
+        description: {
+            type: String,
+            required: true
+        },
+        imageUrl: {
+            type: String,
+            required: true
+        },
         address: {
             type: String,
             required: [true, "La dirección es obligatoria"],

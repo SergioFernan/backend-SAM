@@ -15,7 +15,7 @@ async function getEvents(req, res) {
     }
 }
 
-async function getEvent(req, res) {
+async function getEventById(req, res) {
     try {
         const { id } = req.params;
         const data = await dbGetEventById(id);
@@ -105,4 +105,4 @@ async function deleteEvent(req, res) {
     }
 }
 
-export { getEvents, getEvent, postEvents, updateEvents, deleteEvent };
+export { getEvents, getEventById, postEvents, updateEvents, deleteEvent };
