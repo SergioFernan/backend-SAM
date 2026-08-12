@@ -10,6 +10,7 @@ import ticketRoutes from './routes/ticket.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import roleRoutes from './routes/role.routes.js';
 import cartRoutes from './routes/cart.routes.js';
+import barRoutes from './routes/bar.routes.js';
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use('/api/users', userRoutes );
 app.use('/api/auth', authRoutes );
 app.use('/api/roles', roleRoutes );
 app.use('/api/carts', cartRoutes);
+app.use('/api/bars', barRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
