@@ -20,6 +20,7 @@ const BarSchema = new Schema(
             required: [true, "La dirección es obligatoria"],
             trim: true,
         },
+        // TODO: Determinara el aforo al ser seleccionado el bar o local, para que no se pueda superar el aforo máximo permitido
         capacity: {
             type: Number,
             default: 0,

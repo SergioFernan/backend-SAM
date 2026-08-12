@@ -6,7 +6,7 @@ const app = Router();
 
 app.get(`/`, getEvents);
 
-app.get(`/:id`, getEvent);
+app.get(`/:id`, getEventById);
 app.post(`/`, postEvents);
 app.patch(`/:id`, updateEvents);
 app.delete(`/:id`, deleteEvent);

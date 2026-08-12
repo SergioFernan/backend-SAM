@@ -1,4 +1,4 @@
-import { dbGetBar, dbCreateBar, dbGetBarById, dbDeleteBar, dbUpdateBar } from "../services/bar.services";
+import { dbGetBar, dbCreateBar, dbGetBarById, dbDeleteBar, dbUpdateBar } from "../services/bar.services.js";
 
 async function getBar( req, res ) {
     try{
@@ -50,12 +50,7 @@ async function postBar( req, res) {
                 msj: 'Error de validacion',
                 errors: Object.values(error.errors).map(e => e.message)
             })
-        }
-        if (error.name === 'CastError') {
-            return res.status(400).json({
-                msj: `Valor invalido para el campo '${error.path}'`
-            })
-        }
+        }        
         res.status(500).json({
             msj: `Error al crear el bar`
         })

@@ -1,4 +1,4 @@
-import { BarModel } from "../models/bar.model"
+import { BarModel } from "../models/bar.model.js"
 
 const dbCreateBar = async ( newBar ) => {
     return await BarModel.create( newBar )
