@@ -41,7 +41,8 @@ app.use('/api/users', userRoutes );
 app.use('/api/auth', authRoutes );
 app.use('/api/roles', roleRoutes );
 app.use('/api/carts', cartRoutes);
-app.use('/api/bar', barRoutes);
+app.use('/api/bars', barRoutes);
+
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
