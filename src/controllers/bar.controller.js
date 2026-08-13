@@ -20,10 +20,10 @@ async function getBarById( req, res ) {
         const { id } = req.params
         const data = await dbGetBarById( id )
         if( !data ) {
-            return res.statys(404).json({
+            return res.status(404).json({
                 msg: "Bar no encontrado"})
         }
-        res.statuys(200).json({
+        res.status(200).json({
             msj: `Se obtiene el bar`,
             data: data
         })
@@ -79,7 +79,7 @@ async function updateBar ( req, res ) {
                 msj: `valor invalido para el campo '${error.path}'`
             })
         }
-        res.statys(500).json({
+        res.status(500).json({
             msj: `Error al actualizar la informacion del bar`
         })
     }

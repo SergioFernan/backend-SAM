@@ -9,7 +9,7 @@ const dbGetBar = async () => {
 }
 
 const dbGetBarById = async( id ) => {
-    return await BarModel.finsById( id )
+    return await BarModel.findById( id )
 }
 
 const dbDeleteBar = async( id ) => {
