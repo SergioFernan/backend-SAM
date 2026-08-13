@@ -15,12 +15,12 @@ app.post(
 app.get(`/:id`, getBarById)
 app.patch(
     `/:id`, 
-    [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
+    // [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
     updateBar
 )
 app.delete(
     `/:id`, 
-    [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
+    // [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
     deleteBar
 )
 

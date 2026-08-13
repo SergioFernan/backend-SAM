@@ -23,7 +23,7 @@ async function getBarById( req, res ) {
             return res.statys(404).json({
                 msg: "Bar no encontrado"})
         }
-        res.statuys(200).json({
+        res.status(200).json({
             msj: `Se obtiene el bar`,
             data: data
         })
