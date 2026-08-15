@@ -44,6 +44,12 @@ async function postEvents(req, res) {
         });
     } catch (error) {
         console.error(error);
+        if (error.name === 'CapacityValidationError') {
+            return res.status(400).json({
+                msj: error.message,
+                details: error.details
+            });
+        }
         if (error.name === 'ValidationError') {
             return res.status(400).json({
                 msj: `error de validación`,
@@ -66,12 +72,21 @@ async function updateEvents(req, res) {
         const id = req.params.id;
         const inputData = req.body;
         const data = await dbUpdateEvent(id, inputData);
+        if (!data) {
+            return res.status(404).json({ msj: "evento no encontrado" });
+        }
         res.json({
             msj: `actualizar evento`,
             data: data
         })
     } catch (error) {
         console.error(error);
+        if (error.name === 'CapacityValidationError') {
+            return res.status(400).json({
+                msj: error.message,
+                details: error.details
+            });
+        }
         if (error.name === 'ValidationError') {
             return res.status(400).json({
                 msj: `error de validación`,

@@ -49,6 +49,10 @@ const EventSchema = new Schema({
         type: String,
         required: true
     },
+    bar: {
+        type: Schema.Types.ObjectId,
+        ref: 'bars'
+    },
     status: {
         type: Boolean,
         default: true
