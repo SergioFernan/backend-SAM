@@ -43,7 +43,7 @@ const EventSchema = new Schema({
     },
     category: {
         type: String,
-        required: true
+        default: 'General'
     },
     imageUrl: {
         type: String,

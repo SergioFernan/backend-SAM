@@ -28,7 +28,44 @@ const validateEventCapacity = async (barId, localidades) => {
     }
 };
 
+/**
+ * Valida la coherencia de fechas e inicio/fin de un evento en el servidor.
+ * Reglas:
+ * 1. finalDate no puede ser anterior o igual a initialDate.
+ * 2. La duración mínima del evento debe ser de al menos 40 minutos.
+ */
+const validateEventDates = (initialDate, finalDate) => {
+    if (!initialDate || !finalDate) return;
+
+    const startDate = new Date(initialDate);
+    const endDate = new Date(finalDate);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        const error = new Error("Las fechas especificadas no tienen un formato válido");
+        error.name = "DateRangeValidationError";
+        throw error;
+    }
+
+    if (endDate <= startDate) {
+        const error = new Error("La fecha y hora de finalización no puede ser anterior o igual a la fecha de inicio");
+        error.name = "DateRangeValidationError";
+        throw error;
+    }
+
+    const diffInMs = endDate.getTime() - startDate.getTime();
+    const diffInMinutes = diffInMs / (1000 * 60);
+    const MIN_DURATION_MINUTES = 40;
+
+    if (diffInMinutes < MIN_DURATION_MINUTES) {
+        const error = new Error(`La duración mínima del evento debe ser de al menos 40 minutos (duración actual: ${Math.round(diffInMinutes)} min)`);
+        error.name = "DateRangeValidationError";
+        error.details = { currentMinutes: Math.round(diffInMinutes), minRequiredMinutes: MIN_DURATION_MINUTES };
+        throw error;
+    }
+};
+
 const dbCreateEvent = async (newEvent) => {
+    validateEventDates(newEvent.initialDate, newEvent.finalDate);
     await validateEventCapacity(newEvent.bar, newEvent.localidades);
     return await EventModel.create(newEvent);
 }
@@ -50,6 +87,10 @@ const dbUpdateEvent = async (id, inputData) => {
     if (!existingEvent) {
         return null;
     }
+
+    const initialDate = inputData.initialDate || existingEvent.initialDate;
+    const finalDate = inputData.finalDate || existingEvent.finalDate;
+    validateEventDates(initialDate, finalDate);
 
     const barId = inputData.bar || existingEvent.bar;
     const existingLocalidades = existingEvent.localidades ? existingEvent.localidades.toObject() : {};

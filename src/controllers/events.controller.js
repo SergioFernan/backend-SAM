@@ -44,7 +44,7 @@ async function postEvents(req, res) {
         });
     } catch (error) {
         console.error(error);
-        if (error.name === 'CapacityValidationError') {
+        if (error.name === 'CapacityValidationError' || error.name === 'DateRangeValidationError') {
             return res.status(400).json({
                 msj: error.message,
                 details: error.details
@@ -81,7 +81,7 @@ async function updateEvents(req, res) {
         })
     } catch (error) {
         console.error(error);
-        if (error.name === 'CapacityValidationError') {
+        if (error.name === 'CapacityValidationError' || error.name === 'DateRangeValidationError') {
             return res.status(400).json({
                 msj: error.message,
                 details: error.details
