@@ -2,25 +2,13 @@ import { Schema, model } from "mongoose";
 
 const TicketSchema = new Schema({
 
-    name: {
-        type: String,
-        required: true,
-    },
-    lastname: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
     price: {
         type: Number,
         required: true
     },
     payment: {
-        type: String,
-        required: true,
+        type: Boolean,
+        default: false
     },
     status: {
         type: String,
@@ -29,9 +17,14 @@ const TicketSchema = new Schema({
     },
     stock: {
         type: Number,
-        default: 1        
+        default: 0
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "users"
     }
-},{
+
+}, {
 
 });
 
