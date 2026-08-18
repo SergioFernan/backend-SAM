@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.routes.js';
 import roleRoutes from './routes/role.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import barRoutes from './routes/bar.routes.js';
+import supportRoutes from './routes/support.routes.js';
 import postRoutes from './routes/post.routes.js';
 
 const app = express();
@@ -44,8 +45,10 @@ app.use('/api/roles', roleRoutes );
 app.use('/api/carts', cartRoutes);
 app.use('/api/bars', barRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/support', supportRoutes);
 
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+

@@ -18,6 +18,15 @@ const SupportSchema = new Schema(
             required: [true, "El mensaje es obligatorio"],
             trim: true,
         },
+        requestType: {
+            type: String,
+            enum: ['Terms', 'Refund', 'General'],
+            default: 'General',
+        },
+        transactionId: {
+            type: String,
+            trim: true,
+        },
         status: {
             type: String,
             enum: ["Open", "In Progress", "Resolved", "Closed"],
@@ -33,3 +42,4 @@ const SupportSchema = new Schema(
 const SupportModel = model("support_tickets", SupportSchema);
 
 export { SupportModel };
+
