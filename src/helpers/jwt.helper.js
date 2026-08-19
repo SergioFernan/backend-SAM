@@ -4,17 +4,16 @@ const generateToken = (payload) => {
     // 1. Guardamos el resultado de jwt.sign en la variable 'Token'
     const Token = jwt.sign(
         payload, // Carga Útil
-        process.env.JWT_SECRET, // Semilla (Mejor usar comillas simples)
-        { expiresIn: '1h' } // Configuraciones (Comillas simples)
+        process.env.JWT_SECRET || 'supersecret123', // Semilla con fallback
+        { expiresIn: '1h' } // Configuraciones
     ); 
 
-    // Ahora el return sí cambiará a color rosado porque la variable existe y es accesible
     return Token; 
 }
 
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET);
+        return jwt.verify(token, process.env.JWT_SECRET || 'supersecret123');
     } catch (error) {
         return null;
     }
