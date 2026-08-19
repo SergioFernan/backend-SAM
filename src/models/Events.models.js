@@ -41,7 +41,7 @@ const EventSchema = new Schema({
         type: Date,
         required: true
     },
-    category: {
+    city: {
         type: String,
         required: true
     },
