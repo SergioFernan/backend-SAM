@@ -2,23 +2,12 @@ import { Schema, model } from "mongoose";
 
 const MusicSchema = new Schema(
     {
-        name: {
+        youtubeUrl: {
             type: String,
-            required: [true, "El nombre de la música/género es obligatorio"],
+            required: [true, "La URL de YouTube es obligatoria"],
             trim: true,
-        },
-        genre: {
-            type: String,
-            trim: true,
-        },
-        description: {
-            type: String,
-            trim: true,
-        },
-        isActive: {
-            type: Boolean,
-            default: true,
-        },
+            match: [/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/, "Por favor, ingresa una URL válida de YouTube"]
+        }
     },
     {
         versionKey: false,
