@@ -33,6 +33,10 @@ const EventSchema = new Schema({
         backstage: LocalidadSchema,
         palco: LocalidadSchema
     },
+    direccion: {
+        type: String,
+        required: true
+    },
     initialDate: {
         type: Date,
         required: true
@@ -52,6 +56,11 @@ const EventSchema = new Schema({
     status: {
         type: Boolean,
         default: true
+    },
+    // Evento destacado
+    isFeatured: {
+        type: Boolean,
+        default: false
     }
 }, {
     versionKey: false,

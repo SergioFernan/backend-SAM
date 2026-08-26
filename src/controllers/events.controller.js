@@ -1,16 +1,46 @@
 import { dbGetEvents, dbGetEventById, dbCreateEvent, dbDeleteEvent, dbUpdateEvent } from "../services/events.services.js";
 
+// async function getEvents(req, res) {
+//     try {
+//         const data = await dbGetEvents();
+//         res.status(200).json({
+//             msj: `obtener eventos`,
+//             data: data
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             msj: `error al obtener eventos`
+//         });
+//     }
+// }
+
 async function getEvents(req, res) {
     try {
-        const data = await dbGetEvents();
+        // Extraer parámetros de query string con valores por defecto
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const isFeatured = req.query.isFeatured === 'true'; // Convierte el string 'true' a booleano
+        const sortByField = req.query.sortByField || 'initialDate';
+
+        // Ejecutar el servicio pasándole los parámetros parseados
+        const result = await dbGetEvents({
+            page,
+            limit,
+            isFeatured,
+            sortByField
+        });
+
         res.status(200).json({
-            msj: `obtener eventos`,
-            data: data
+            msj: 'Eventos obtenidos con éxito',
+            data: result.data,
+            pagination: result.pagination
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            msj: `error al obtener eventos`
+            msj: 'Error al obtener eventos',
+            error: error.message
         });
     }
 }
