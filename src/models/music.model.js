@@ -19,6 +19,14 @@ const MusicSchema = new Schema(
             type: Boolean,
             default: true,
         },
+        youtubeUrl: {
+            type: String
+        },
+        imageUrl: {
+            type: String,
+            required: true
+        }
+
     },
     {
         versionKey: false,
