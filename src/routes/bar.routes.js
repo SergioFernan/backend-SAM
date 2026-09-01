@@ -9,19 +9,19 @@ const app = Router()
 app.get(`/`, getBar)
 app.post(
     `/`, 
-    // [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
+    [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER, ROLES.BAR])], 
     postBar
 )
 app.get(`/user/:userId`, getBarByUserId)
 app.get(`/:id`, getBarById)
 app.patch(
     `/:id`, 
-    // [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
+    [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER, ROLES.BAR])], 
     updateBar
 )
 app.delete(
     `/:id`, 
-    // [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
+    [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER, ROLES.BAR])], 
     deleteBar
 )
 

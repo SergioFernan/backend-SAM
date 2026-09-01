@@ -23,6 +23,10 @@ const MusicSchema = new Schema(
             type: String,
             trim: true
         },
+        youtubeUrl: {
+            type: String,
+            trim: true
+        },
         isActive: {
             type: Boolean,
             default: true

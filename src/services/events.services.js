@@ -114,4 +114,8 @@ const dbUpdateEvent = async (id, inputData) => {
     );
 }
 
-export { dbCreateEvent, dbGetEvents, dbGetEventById, dbDeleteEvent, dbUpdateEvent };
+const dbGetEventsByBar = async (barId) => {
+    return await EventModel.find({ bar: barId }).populate('bar');
+}
+
+export { dbCreateEvent, dbGetEvents, dbGetEventById, dbGetEventsByBar, dbDeleteEvent, dbUpdateEvent };

@@ -38,6 +38,11 @@ async function getBarById( req, res ) {
 async function postBar( req, res) {
     try {
         const inputData = req.body
+        // Si el usuario está autenticado, asignarle el bar automáticamente
+        if (req.user && req.user._id) {
+            inputData.userId = req.user._id;
+        }
+
         const data = await dbCreateBar( inputData )
         res.status(201).json({
             msj: `Bar creado`,
@@ -61,6 +66,19 @@ async function updateBar ( req, res ) {
     try {
         const id = req.params.id
         const inputData = req.body
+
+        // Validación de permisos: verificar que el usuario sea el dueño del bar o sea ADMIN
+        if (req.user) {
+            const bar = await dbGetBarById(id);
+            if (!bar) {
+                return res.status(404).json({ msj: "Bar no encontrado" });
+            }
+            // `dbGetBarById` hace populate de userId, por lo que usamos bar.userId._id
+            if (req.user.role !== 'ADMIN' && bar.userId && bar.userId._id.toString() !== req.user._id.toString()) {
+                return res.status(403).json({ msj: "No tienes permiso para actualizar la información de este bar" });
+            }
+        }
+
         const data = await dbUpdateBar( id, inputData )
         res.json({
             mej: `Atualiza informacion del bar`,
@@ -88,6 +106,18 @@ async function updateBar ( req, res ) {
 async function deleteBar(req, res) {
     try {
         const id = req.params.id;
+
+        // Validación de permisos
+        if (req.user) {
+            const bar = await dbGetBarById(id);
+            if (!bar) {
+                return res.status(404).json({ msj: "Bar no encontrado" });
+            }
+            if (req.user.role !== 'ADMIN' && bar.userId && bar.userId._id.toString() !== req.user._id.toString()) {
+                return res.status(403).json({ msj: "No tienes permiso para eliminar este bar" });
+            }
+        }
+
         const data = await dbDeleteBar(id);
         res.json({
             msj: `Se borra el bar`,

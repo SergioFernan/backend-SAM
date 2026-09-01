@@ -51,7 +51,8 @@ const EventSchema = new Schema({
     },
     bar: {
         type: Schema.Types.ObjectId,
-        ref: 'bars'
+        ref: 'bars',
+        default: null
     },
     capacity: {
         type: Number,
