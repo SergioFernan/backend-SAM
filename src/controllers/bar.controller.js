@@ -1,4 +1,4 @@
-import { dbGetBar, dbCreateBar, dbGetBarById, dbDeleteBar, dbUpdateBar } from "../services/bar.services.js";
+import { dbGetBar, dbCreateBar, dbGetBarById, dbGetBarByUserId, dbDeleteBar, dbUpdateBar } from "../services/bar.services.js";
 
 async function getBar( req, res ) {
     try{
@@ -101,4 +101,24 @@ async function deleteBar(req, res) {
     }
 }
 
-export { getBar, getBarById, postBar, updateBar, deleteBar }
+async function getBarByUserId( req, res ) {
+    try{
+        const { userId } = req.params
+        const data = await dbGetBarByUserId( userId )
+        if( !data ) {
+            return res.status(404).json({
+                msg: "No se encontró un bar asociado a este usuario"})
+        }
+        res.status(200).json({
+            msj: `Se obtiene el bar del usuario`,
+            data: data
+        })
+    } catch ( error ) {
+        console.error( error )
+        res.status(500).json({
+            msj: `Error al obtener el bar del usuario`
+        })
+    }    
+}
+
+export { getBar, getBarById, getBarByUserId, postBar, updateBar, deleteBar }

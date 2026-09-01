@@ -1,33 +1,118 @@
 import CartModel from "../models/cart.model.js";
+import TicketModel from "../models/ticket.model.js";
+import EventModel from "../models/Events.models.js";
 
 // crear un nuevo carrito en la base de datos
 const dbCreateCart = async (newCart) => {
+    // Calcular totalPrice automáticamente
+    if (newCart.items && newCart.items.length > 0) {
+        newCart.totalPrice = newCart.items.reduce((sum, item) => {
+            return sum + (item.unitPrice * item.quantity);
+        }, 0);
+    }
     return await CartModel.create(newCart);
 };
 
 // obtener todos los carritos registrados
 const dbGetCarts = async () => {
     return await CartModel.find()
-        .populate("userId", "name email")    // trae solo el nombre y correo del usuario
-        .populate("items.productId");        // trae el detalle de los productos
+        .populate("userId", "name email")
+        .populate("items.eventId", "name initialDate finalDate imageUrl");
 };
 
 // buscar un carrito por su id
 const dbGetCartById = async (id) => {
     return await CartModel.findById(id)
         .populate("userId", "name email")
-        .populate("items.productId");
+        .populate("items.eventId", "name initialDate finalDate imageUrl");
 };
 
 // actualizar un carrito por su id
-// { new: true } para que devuelva el documento ya actualizado y no el original
 const dbUpdateCart = async (id, inputData) => {
-    return await CartModel.findByIdAndUpdate(id, inputData, { new: true });
+    // Recalcular totalPrice si se actualizan items
+    if (inputData.items && inputData.items.length > 0) {
+        inputData.totalPrice = inputData.items.reduce((sum, item) => {
+            return sum + (item.unitPrice * item.quantity);
+        }, 0);
+    }
+    return await CartModel.findByIdAndUpdate(id, inputData, { new: true })
+        .populate("userId", "name email")
+        .populate("items.eventId", "name initialDate finalDate imageUrl");
 };
 
 // eliminar un carrito por su id
 const dbDeleteCart = async (id) => {
     return await CartModel.findByIdAndDelete(id);
+};
+
+// Procesar checkout: crear tickets y decrementar aforo
+const dbCheckoutCart = async (cartId) => {
+    const cart = await CartModel.findById(cartId);
+    if (!cart) {
+        const error = new Error("Carrito no encontrado");
+        error.name = "NotFoundError";
+        throw error;
+    }
+
+    if (cart.status !== 'pending') {
+        const error = new Error(`El carrito ya fue procesado (estado: ${cart.status})`);
+        error.name = "StatusError";
+        throw error;
+    }
+
+    if (!cart.items || cart.items.length === 0) {
+        const error = new Error("El carrito está vacío");
+        error.name = "ValidationError";
+        throw error;
+    }
+
+    const createdTickets = [];
+
+    // Validar disponibilidad de todos los items primero
+    for (const item of cart.items) {
+        const event = await EventModel.findById(item.eventId);
+        if (!event) {
+            const error = new Error(`Evento ${item.eventId} no encontrado`);
+            error.name = "NotFoundError";
+            throw error;
+        }
+        if (event.availableTickets < item.quantity) {
+            const error = new Error(
+                `No hay suficientes boletas para el evento "${event.name}". Disponibles: ${event.availableTickets}, Solicitadas: ${item.quantity}`
+            );
+            error.name = "AvailabilityError";
+            throw error;
+        }
+    }
+
+    // Crear tickets y decrementar aforo
+    for (const item of cart.items) {
+        // Decrementar availableTickets
+        await EventModel.findByIdAndUpdate(item.eventId, {
+            $inc: { availableTickets: -item.quantity }
+        });
+
+        // Crear ticket
+        const ticket = await TicketModel.create({
+            eventId: item.eventId,
+            userId: cart.userId,
+            quantity: item.quantity,
+            zone: item.zone,
+            totalPrice: item.unitPrice * item.quantity,
+            status: 'Comprada'
+        });
+
+        createdTickets.push(ticket);
+    }
+
+    // Marcar carrito como completado
+    cart.status = 'completed';
+    await cart.save();
+
+    return {
+        cart: cart,
+        tickets: createdTickets
+    };
 };
 
 export {
@@ -36,4 +121,5 @@ export {
     dbGetCartById,
     dbUpdateCart,
     dbDeleteCart,
+    dbCheckoutCart,
 };

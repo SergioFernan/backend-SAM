@@ -67,6 +67,10 @@ const validateEventDates = (initialDate, finalDate) => {
 const dbCreateEvent = async (newEvent) => {
     validateEventDates(newEvent.initialDate, newEvent.finalDate);
     await validateEventCapacity(newEvent.bar, newEvent.localidades);
+    // Si no se envía availableTickets, inicializar con el valor de capacity
+    if (newEvent.capacity && newEvent.availableTickets == null) {
+        newEvent.availableTickets = newEvent.capacity;
+    }
     return await EventModel.create(newEvent);
 }
 

@@ -3,27 +3,33 @@ import { dbCreateMusic, dbGetAllMusic, dbGetMusicById, dbUpdateMusic, dbDeleteMu
 // 1. Crea la cancion en la base de datos 
 const createMusicController = async (req, res) => {
     try {
-        const { youtubeUrl } = req.body;
-        if (!youtubeUrl) {
+        const { name, artist, imageUrl, externalUrl, genre } = req.body;
+        if (!name || !imageUrl) {
             return res.status(400).json({
-                msg: "la URL de youtube es obligatoria"
+                msg: "El nombre y la URL de la imagen son obligatorios"
             });
         }
-        const newMusic = await dbCreateMusic({ youtubeUrl });
+        const newMusic = await dbCreateMusic({ name, artist, imageUrl, externalUrl, genre });
         return res.status(201).json({
-            msg: "cancion agregada a la base de datos",
+            msg: "Canción agregada a la base de datos",
             data: newMusic
         });
     } catch (error) {
-        console.error("Error al agregar cancion", error);
+        console.error("Error al agregar canción", error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                msg: "Error de validación",
+                errors: Object.values(error.errors).map(e => e.message)
+            });
+        }
         return res.status(500).json({
-            msg: "no se pudo agregar la cancion",
+            msg: "No se pudo agregar la canción",
             error: error.message
         });
     }
 };
 
-// 2. Obtiene todas las canciones de la base de datos
+// 2. Obtiene todas las canciones activas de la base de datos
 const getAllMusicController = async (req, res) => {
     try {
         const musicList = await dbGetAllMusic();
@@ -31,7 +37,7 @@ const getAllMusicController = async (req, res) => {
     } catch (error) {
         console.error("Error al obtener canciones", error);
         return res.status(500).json({
-            msg: "no se pudo obtener las canciones",
+            msg: "No se pudo obtener las canciones",
             error: error.message
         });
     }
@@ -42,24 +48,30 @@ const dbGetMusicByIdController = async (req, res) => {
     try {
         const id = req.params.id;
         const music = await dbGetMusicById(id);
+        if (!music) {
+            return res.status(404).json({ msg: "Música no encontrada" });
+        }
         return res.status(200).json({ data: music });
     } catch (error) {
-        console.error("Error al obtener cancion", error);
+        console.error("Error al obtener canción", error);
         return res.status(500).json({
-            msg: "no se pudo obtener la cancion",
+            msg: "No se pudo obtener la canción",
             error: error.message
         });
     }
 }
-// 4. Actualiza una cancion
+
+// 4. Actualiza una cancion (acepta campos parciales)
 const updateMusicController = async (req, res) => {
     try {
         const { id } = req.params;
-        const { youtubeUrl } = req.body;
-        if (!youtubeUrl) {
-            return res.status(400).json({ msg: "La URL de YouTube es obligatoria para actualizar" });
+        const updateData = req.body;
+
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({ msg: "No se enviaron campos para actualizar" });
         }
-        const updatedMusic = await dbUpdateMusic(id, { youtubeUrl });
+
+        const updatedMusic = await dbUpdateMusic(id, updateData);
 
         if (!updatedMusic) {
             return res.status(404).json({ msg: "Música no encontrada para actualizar" });
@@ -70,6 +82,7 @@ const updateMusicController = async (req, res) => {
         return res.status(500).json({ msg: "Error interno del servidor", error: error.message });
     }
 }
+
 // 5. elimina una cancion
 const deleteMusicController = async (req, res) => {
     try {
@@ -77,18 +90,18 @@ const deleteMusicController = async (req, res) => {
         const deletedMusic = await dbDeleteMusic(id);
         if (!deletedMusic) {
             return res.status(404).json({
-                msg: "Musica no encontrada para eliminar"
+                msg: "Música no encontrada para eliminar"
             });
         }
         return res.status(200).json({
-            msg: "Musica eliminada correctamente"
+            msg: "Música eliminada correctamente"
         });
 
     }
     catch (error) {
-        console.error("Error al eliminar cancion", error);
+        console.error("Error al eliminar canción", error);
         return res.status(500).json({
-            msg: "no se pudo eliminar la cancion",
+            msg: "No se pudo eliminar la canción",
             error: error.message
         });
     }

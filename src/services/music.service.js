@@ -6,8 +6,9 @@ const dbCreateMusic = async (inputData) => {
     return data;
 }
 
+// Solo devuelve las músicas activas por defecto
 const dbGetAllMusic = async () => {
-    return MusicModel.find();
+    return MusicModel.find({ isActive: true });
 }
 
 const dbGetMusicById = async (id) => {

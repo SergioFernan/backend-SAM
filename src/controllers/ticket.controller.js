@@ -1,166 +1,183 @@
-import { mongoose } from "mongoose";
-import TicketModel from "../models/ticket.model.js";
-import { dbCreateTicket, dbDeleteTicket, dbGetTicket, dbUpDateTicket, dbGetTicketById } from "../services/ticket.services.js";
+import mongoose from "mongoose";
+import {
+    dbCreateTicket,
+    dbGetTickets,
+    dbGetTicketById,
+    dbGetTicketsByUserId,
+    dbDeleteTicket,
+    dbUpdateTicket
+} from "../services/ticket.services.js";
 
-
-
-const getTicket = async (req, res) => {
-
+const getTickets = async (req, res) => {
     try {
-
-        const data = await dbGetTicket()
-
-        res.status(201).json({
-            msj: 'Name of Event',
+        const data = await dbGetTickets();
+        res.status(200).json({
+            msj: 'Tickets obtenidos correctamente',
             data: data
         });
-        
     } catch (error) {
-
         console.error(error);
-
         res.status(500).json({
-            msg: 'No se pudo obtener el evento'
+            msg: 'No se pudieron obtener los tickets'
         });
-        
-    };
+    }
 };
-
-
-
-
-const postTicket = async (req, res) => {
-   
-    try {
-        const inputData = req.body;
-
-        const data = await dbCreateTicket(inputData);
-
-        res.status(201).json({
-            data: data
-        });
-        
-    } catch (error) {
-
-    console.error(error.code);
-    
-    if( error.code === 11000 );
-        return res.json({
-            msg: 'Error: Ese ticket ya existe.'
-        });       
-    };
-
-    res.status(500).json({
-        msg: 'No se pudo registrar el ticket.'
-    });
-};
-
-
-
 
 const getTicketById = async (req, res) => {
-
     try {
-        const id = req.params.id;
+        const { id } = req.params;
 
-        if(!mongoose.Types.objectId.isValid(id)) {
-
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
-                msg: 'Error Id: No se encontró el Ticket.'
+                msg: 'El formato del id no es válido'
             });
-        };
+        }
 
         const data = await dbGetTicketById(id);
 
-        if( ! data ) {
-            return res.json ({
-                msg: 'Error Id: El Id no existe'
+        if (!data) {
+            return res.status(404).json({
+                msg: 'Ticket no encontrado'
             });
-        };
-        
-        res.status(200).json ({
-            data: data
-        });
-
-    } catch (error) {
-
-        console.error(error);
-
-        res.status(500).json({
-            msg: 'Error: No se encontró el Id del Ticket.'
-        });        
-    };
-};
-
-
-
-
-const patchTicket = async (req,res) => {
-
-    try {
-
-        const id = req.params.id;
-        const inputData = req.body;
-
-        const data = await dbUpDateTicket(id, inputData);
+        }
 
         res.status(200).json({
-            msg: 'Update Ticket',
+            msj: 'Ticket obtenido correctamente',
             data: data
         });
-        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msg: 'No se pudo obtener el ticket'
+        });
+    }
+};
+
+const getTicketsByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                msg: 'El formato del userId no es válido'
+            });
+        }
+
+        const data = await dbGetTicketsByUserId(userId);
+        res.status(200).json({
+            msj: 'Tickets del usuario obtenidos correctamente',
+            data: data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msg: 'No se pudieron obtener los tickets del usuario'
+        });
+    }
+};
+
+const postTicket = async (req, res) => {
+    try {
+        const inputData = req.body;
+        const data = await dbCreateTicket(inputData);
+        res.status(201).json({
+            msj: 'Ticket creado correctamente',
+            data: data
+        });
+    } catch (error) {
+        console.error(error);
+
+        if (error.name === 'NotFoundError') {
+            return res.status(404).json({
+                msg: error.message
+            });
+        }
+
+        if (error.name === 'AvailabilityError') {
+            return res.status(400).json({
+                msg: error.message
+            });
+        }
+
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                msg: 'Error de validación',
+                errors: Object.values(error.errors).map(e => e.message)
+            });
+        }
+
+        res.status(500).json({
+            msg: 'No se pudo crear el ticket'
+        });
+    }
+};
+
+const patchTicket = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const inputData = req.body;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                msg: 'El formato del id no es válido'
+            });
+        }
+
+        const data = await dbUpdateTicket(id, inputData);
+
+        if (!data) {
+            return res.status(404).json({
+                msg: 'Ticket no encontrado para actualizar'
+            });
+        }
+
+        res.status(200).json({
+            msg: 'Ticket actualizado correctamente',
+            data: data
+        });
     } catch (error) {
         console.error(error);
 
         if (error.name === 'CastError') {
-
             return res.status(400).json({
-                msg: 'Error Id: No pudo actualizar la información, Id incorrecto.'
+                msg: 'Id incorrecto, no se pudo actualizar'
             });
-        };
-        
+        }
+
         res.status(500).json({
-            msg: 'No se pudo actualizar la información'
+            msg: 'No se pudo actualizar el ticket'
         });
-    };
+    }
 };
 
-
-
-
 const deleteTicket = async (req, res) => {
-
     try {
-        
-        const id = req.params.id;
+        const { id } = req.params;
 
-        if(!mongoose.Types.ObjectId.isValid(id)) {
-
-            return res.status(400).json({})
-        };
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                msg: 'El formato del id no es válido'
+            });
+        }
 
         const data = await dbDeleteTicket(id);
 
-        if (! data) {
-            return res.json ({
-                msg: 'No se pude eliminar un Ticket que no ha sido registrafo.'
+        if (!data) {
+            return res.status(404).json({
+                msg: 'Ticket no encontrado para eliminar'
             });
-        };
+        }
 
         res.status(200).json({
-            msg: 'Delete Ticket',
-            data: data,
-            id: id
+            msg: 'Ticket eliminado correctamente',
+            data: data
         });
-
     } catch (error) {
-
         console.error(error);
-        
         res.status(500).json({
-            msg: 'No se pudo borrar el Ticket'
+            msg: 'No se pudo eliminar el ticket'
         });
-    };
+    }
 };
 
-export { getTicket, postTicket, patchTicket, deleteTicket, getTicketById};
+export { getTickets, getTicketById, getTicketsByUserId, postTicket, patchTicket, deleteTicket };

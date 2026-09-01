@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteBar, getBar, getBarById, postBar, updateBar } from "../controllers/bar.controller.js";
+import { deleteBar, getBar, getBarById, getBarByUserId, postBar, updateBar } from "../controllers/bar.controller.js";
 import { authenticationUser } from "../middlewares/authentication.middleware.js";
 import { authorizationUser } from "../middlewares/authorization.middleware.js";
 import { ROLES } from "../config/global.config.js";
@@ -12,6 +12,7 @@ app.post(
     // [authenticationUser, authorizationUser([ROLES.ADMIN, ROLES.USER])], 
     postBar
 )
+app.get(`/user/:userId`, getBarByUserId)
 app.get(`/:id`, getBarById)
 app.patch(
     `/:id`, 
