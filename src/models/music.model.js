@@ -1,10 +1,9 @@
 import { Schema, model } from "mongoose";
-
 const MusicSchema = new Schema(
     {
         name: {
             type: String,
-            required: [true, "El nombre de la canción es obligatorio"],
+            default: "Track de YouTube",
             trim: true
         },
         artist: {
@@ -13,7 +12,7 @@ const MusicSchema = new Schema(
         },
         imageUrl: {
             type: String,
-            required: [true, "La URL de la imagen es obligatoria"]
+            default: "/assets/default-event.jpg"
         },
         externalUrl: {
             type: String,
@@ -25,6 +24,7 @@ const MusicSchema = new Schema(
         },
         youtubeUrl: {
             type: String,
+            required: [true, "La URL de youtube es obligatoria"],
             trim: true
         },
         isActive: {
@@ -37,7 +37,5 @@ const MusicSchema = new Schema(
         timestamps: true,
     }
 );
-
 const MusicModel = model("music", MusicSchema);
-
-export { MusicModel };
+export default MusicModel;
