@@ -38,4 +38,4 @@ const MusicSchema = new Schema(
     }
 );
 const MusicModel = model("music", MusicSchema);
-export default MusicModel;
+export { MusicModel };
