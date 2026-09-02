@@ -1,9 +1,50 @@
+import mongoose from "mongoose";
 import CartModel from "../models/cart.model.js";
 import TicketModel from "../models/ticket.model.js";
 import EventModel from "../models/Events.models.js";
 
+const validateTicketLimit = async (userId, items, cartIdToExclude = null) => {
+    if (!items || items.length === 0) return;
+
+    for (const item of items) {
+        const eventId = item.eventId;
+        const quantityToBuy = item.quantity;
+        
+        // Sumar tickets comprados
+        const purchasedTickets = await TicketModel.aggregate([
+            { $match: { userId: new mongoose.Types.ObjectId(userId), eventId: new mongoose.Types.ObjectId(eventId), status: { $ne: 'Cancelada' } } },
+            { $group: { _id: null, total: { $sum: '$quantity' } } }
+        ]);
+        const purchasedCount = purchasedTickets.length > 0 ? purchasedTickets[0].total : 0;
+
+        // Sumar tickets en carritos pendientes
+        const matchPending = { userId: new mongoose.Types.ObjectId(userId), status: 'pending' };
+        if (cartIdToExclude) {
+            matchPending._id = { $ne: new mongoose.Types.ObjectId(cartIdToExclude) };
+        }
+
+        const pendingCarts = await CartModel.aggregate([
+            { $match: matchPending },
+            { $unwind: '$items' },
+            { $match: { 'items.eventId': new mongoose.Types.ObjectId(eventId) } },
+            { $group: { _id: null, total: { $sum: '$items.quantity' } } }
+        ]);
+        const pendingCount = pendingCarts.length > 0 ? pendingCarts[0].total : 0;
+
+        if (purchasedCount + pendingCount + quantityToBuy > 4) {
+            const error = new Error('El usuario no puede comprar más de 4 boletas para un mismo evento');
+            error.name = 'LimitError';
+            throw error;
+        }
+    }
+};
+
 // crear un nuevo carrito en la base de datos
 const dbCreateCart = async (newCart) => {
+    if (newCart.userId && newCart.items) {
+        await validateTicketLimit(newCart.userId, newCart.items);
+    }
+
     // Calcular totalPrice automáticamente
     if (newCart.items && newCart.items.length > 0) {
         newCart.totalPrice = newCart.items.reduce((sum, item) => {
@@ -31,6 +72,11 @@ const dbGetCartById = async (id) => {
 const dbUpdateCart = async (id, inputData) => {
     // Recalcular totalPrice si se actualizan items
     if (inputData.items && inputData.items.length > 0) {
+        const currentCart = await CartModel.findById(id);
+        if (currentCart) {
+            await validateTicketLimit(currentCart.userId, inputData.items, id);
+        }
+
         inputData.totalPrice = inputData.items.reduce((sum, item) => {
             return sum + (item.unitPrice * item.quantity);
         }, 0);

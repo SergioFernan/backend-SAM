@@ -84,6 +84,12 @@ const postCart = async (req, res) => {
             });
         }
 
+        if (error.name === 'LimitError') {
+            return res.status(400).json({
+                msg: error.message
+            });
+        }
+
         res.status(500).json({
             msg: "No se pudo crear el carrito",
             error: error.message
@@ -124,6 +130,12 @@ const patchCart = async (req, res) => {
         if (error.name === "CastError") {
             return res.status(400).json({
                 msg: "Error Id: no se pudo actualizar, id incorrecto",
+            });
+        }
+
+        if (error.name === 'LimitError') {
+            return res.status(400).json({
+                msg: error.message
             });
         }
 
