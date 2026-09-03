@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 
 const BarSchema = new Schema(
     {
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'users',
+            required: [true, "El usuario propietario del bar es obligatorio"]
+        },
         name: {
             type: String,
             required: [true, "El nombre del bar o local es obligatorio"],

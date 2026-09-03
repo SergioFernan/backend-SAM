@@ -1,14 +1,13 @@
 import { Router } from "express";
-import { deleteMusic, getmusic, getMusicById, postMusic, updateMusic } from "../controllers/music.controller.js";
+import { createMusicController, getAllMusicController, dbGetMusicByIdController, updateMusicController, deleteMusicController } from "../controllers/music.controller.js";
 
+const router = Router();
 
+router.post("/", createMusicController);
+router.get("/", getAllMusicController);
+router.get("/:id", dbGetMusicByIdController);
+router.patch("/:id", updateMusicController);
+router.delete("/:id", deleteMusicController);
 
-const app = Router()
+export default router;
 
-app.get('/', getmusic)
-app.post('/', postMusic)
-app.get('/:id', getMusicById )
-app.patch('/:id', updateMusic)
-app.delete('/:id', deleteMusic)
-
-export default app

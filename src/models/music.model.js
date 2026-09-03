@@ -1,39 +1,41 @@
 import { Schema, model } from "mongoose";
-
 const MusicSchema = new Schema(
     {
         name: {
             type: String,
-            required: [true, "El nombre de la música/género es obligatorio"],
-            trim: true,
+            default: "Track de YouTube",
+            trim: true
         },
-        genre: {
+        artist: {
             type: String,
-            trim: true,
-        },
-        description: {
-            type: String,
-            trim: true,
-        },
-        isActive: {
-            type: Boolean,
-            default: true,
-        },
-        youtubeUrl: {
-            type: String
+            trim: true
         },
         imageUrl: {
             type: String,
-            required: true
-        }
+            default: "/assets/default-event.jpg"
+        },
+        externalUrl: {
+            type: String,
+            trim: true
+        },
+        genre: {
+            type: String,
+            trim: true
+        },
+        youtubeUrl: {
+            type: String,
+            required: [true, "La URL de youtube es obligatoria"],
+            trim: true
+        },
+        isActive: {
+            type: Boolean,
 
+        }
     },
     {
         versionKey: false,
         timestamps: true,
     }
 );
-
 const MusicModel = model("music", MusicSchema);
-
 export { MusicModel };

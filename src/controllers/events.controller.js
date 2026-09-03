@@ -1,4 +1,4 @@
-import { dbGetEvents, dbGetEventById, dbCreateEvent, dbDeleteEvent, dbUpdateEvent } from "../services/events.services.js";
+import { dbGetEvents, dbGetEventById, dbGetEventsByBar, dbCreateEvent, dbDeleteEvent, dbUpdateEvent } from "../services/events.services.js";
 
 // async function getEvents(req, res) {
 //     try {
@@ -74,6 +74,12 @@ async function postEvents(req, res) {
         });
     } catch (error) {
         console.error(error);
+        if (error.name === 'CapacityValidationError' || error.name === 'DateRangeValidationError') {
+            return res.status(400).json({
+                msj: error.message,
+                details: error.details
+            });
+        }
         if (error.name === 'ValidationError') {
             return res.status(400).json({
                 msj: `error de validación`,
@@ -91,17 +97,59 @@ async function postEvents(req, res) {
     }
 }
 
+async function getEventsByBar(req, res) {
+    try {
+        const { barId } = req.params;
+        const data = await dbGetEventsByBar(barId);
+        res.status(200).json({
+            msj: `obtener eventos del bar`,
+            data: data
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                msj: `ID de bar inválido`
+            });
+        }
+        res.status(500).json({
+            msj: `error al obtener eventos del bar`
+        });
+    }
+}
+
 async function updateEvents(req, res) {
     try {
         const id = req.params.id;
         const inputData = req.body;
+
+        // Validación de permisos: verificar que el usuario sea dueño del bar del evento
+        if (req.user && req.user.barId) {
+            const event = await dbGetEventById(id);
+            if (!event) {
+                return res.status(404).json({ msj: "evento no encontrado" });
+            }
+            if (event.bar && event.bar._id.toString() !== req.user.barId.toString()) {
+                return res.status(403).json({ msj: "no tienes permiso para editar este evento" });
+            }
+        }
+
         const data = await dbUpdateEvent(id, inputData);
+        if (!data) {
+            return res.status(404).json({ msj: "evento no encontrado" });
+        }
         res.json({
             msj: `actualizar evento`,
             data: data
         })
     } catch (error) {
         console.error(error);
+        if (error.name === 'CapacityValidationError' || error.name === 'DateRangeValidationError') {
+            return res.status(400).json({
+                msj: error.message,
+                details: error.details
+            });
+        }
         if (error.name === 'ValidationError') {
             return res.status(400).json({
                 msj: `error de validación`,
@@ -122,6 +170,18 @@ async function updateEvents(req, res) {
 async function deleteEvent(req, res) {
     try {
         const id = req.params.id;
+
+        // Validación de permisos: verificar que el usuario sea dueño del bar del evento
+        if (req.user && req.user.barId) {
+            const event = await dbGetEventById(id);
+            if (!event) {
+                return res.status(404).json({ msj: "evento no encontrado" });
+            }
+            if (event.bar && event.bar._id.toString() !== req.user.barId.toString()) {
+                return res.status(403).json({ msj: "no tienes permiso para eliminar este evento" });
+            }
+        }
+
         const data = await dbDeleteEvent(id);
         res.json({
             msj: `borrar evento`,
@@ -135,4 +195,4 @@ async function deleteEvent(req, res) {
     }
 }
 
-export { getEvents, getEventById, postEvents, updateEvents, deleteEvent };
+export { getEvents, getEventById, getEventsByBar, postEvents, updateEvents, deleteEvent };

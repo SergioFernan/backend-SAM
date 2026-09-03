@@ -1,23 +1,27 @@
-import { MusicModel } from "../models/music.model.js"
+import { MusicModel } from "../models/music.model.js";
 
-const dbCreateMusic = async ( newBar ) => {
-    return await MusicModel.create( newBar )
+const dbCreateMusic = async (inputData) => {
+    const data = new MusicModel(inputData);
+    await data.save();
+    return data;
 }
 
-const dbGetMusic = async () => {
-    return await MusicModel.find()
+// Solo devuelve las músicas activas por defecto
+const dbGetAllMusic = async () => {
+    return MusicModel.find({ isActive: true });
 }
 
-const dbGetMusicById = async( id ) => {
-    return await MusicModel.findById( id )
+const dbGetMusicById = async (id) => {
+    return MusicModel.findById(id);
 }
 
-const dbDeleteMusic = async( id ) => {
-    return await MusicModel.findOneAndDelete({_id: id })
+const dbUpdateMusic = async (id, inputData) => {
+    return MusicModel.findByIdAndUpdate(id, inputData, { new: true });
 }
 
-const dbUpdateMusic = async( id, inputData ) => {
-    return await MusicModel.findOneAndUpdate({ _id: id }, inputData, {returnDocument: 'after'})
+const dbDeleteMusic = async (id) => {
+    return MusicModel.findByIdAndDelete(id);
 }
 
-export { dbCreateMusic, dbGetMusic, dbGetMusicById, dbDeleteMusic, dbUpdateMusic }
+export { dbCreateMusic, dbGetAllMusic, dbGetMusicById, dbUpdateMusic, dbDeleteMusic };
+

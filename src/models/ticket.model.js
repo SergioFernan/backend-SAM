@@ -1,43 +1,41 @@
 import { Schema, model } from "mongoose";
 
 const TicketSchema = new Schema({
-
-    name: {
-        type: String,
-        required: true,
+    eventId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Events',
+        required: [true, "El evento es obligatorio"]
     },
-    lastname: {
-        type: String,
-        required: true
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: [true, "El usuario es obligatorio"]
     },
-    email: {
-        type: String,
-        required: true
-    },
-    price: {
+    quantity: {
         type: Number,
-        required: true
+        required: [true, "La cantidad es obligatoria"],
+        min: [1, "Debe comprar al menos 1 boleta"]
     },
-    payment: {
+    zone: {
         type: String,
-        required: true,
+        required: [true, "La zona es obligatoria"],
+        enum: ['General', 'VIP', 'BackStage', 'Palco']
+    },
+    totalPrice: {
+        type: Number,
+        required: [true, "El precio total es obligatorio"],
+        min: 0
     },
     status: {
         type: String,
-        default: "Disponible",
-        enum: ["Comprada", "Cancelada", "agotada", "Pendiente"]
-    },
-    stock: {
-        type: Number,
-        default: 1        
+        enum: ['Comprada', 'Cancelada', 'Pendiente'],
+        default: 'Comprada'
     }
-},{
-
+}, {
+    versionKey: false,
+    timestamps: true
 });
 
-const TicketModel = model(
-    'ticket',
-    TicketSchema
-);
+const TicketModel = model('ticket', TicketSchema);
 
 export default TicketModel;

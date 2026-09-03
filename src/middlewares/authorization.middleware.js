@@ -17,9 +17,7 @@ const authorizationUser = (allowedRoles = []) => {
                     msg: `El rol ${role} no esta autorizado para esta acción`,
                 });
             }
-
-            console.log(`El rol ${role} no esta autorizado para esta acción`);
-
+            console.log(`El rol ${role} fue autorizado para esta acción`);
             // Paso 3: Da acceso a la ejecucion de la siguiente funcion definida en la ruta
             next();
         } catch (error) {

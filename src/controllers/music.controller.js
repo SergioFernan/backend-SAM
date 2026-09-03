@@ -1,105 +1,117 @@
-import { dbCreateMusic, dbDeleteMusic, dbGetMusic, dbGetMusicById, dbUpdateMusic } from "../services/music.service.js"
+import { dbCreateMusic, dbGetAllMusic, dbGetMusicById, dbUpdateMusic, dbDeleteMusic } from "../services/music.service.js";
 
-
-async function getmusic( req, res ) {
-    try{
-        const data = await dbGetMusic()
-        res.status(200).json({
-            msj: `Obtener musica`,
-            data: data
-        })
-    } catch ( error ) {
-        console.error( error )
-        res.status(500).json({
-            msj: `Error al obtener musica`
-        })
-    }
-}
-
-async function getMusicById( req, res ) {
-    try{
-        const { id } = req.params
-        const data = await dbGetMusicById( id )
-        if( !data ) {
-            return res.status(404).json({
-                msg: "Canción no encontrada"})
-        }
-        res.status(200).json({
-            msj: `Se obtiene la canción`,
-            data: data
-        })
-    } catch ( error ) {
-        console.error( error )
-        res.status(500).json({
-            msj: `Error al obtener la canción`
-        })
-    }    
-}
-
-async function postMusic( req, res) {
+// 1. Crea la cancion en la base de datos 
+const createMusicController = async (req, res) => {
     try {
-        const inputData = req.body
-        const data = await dbCreateMusic( inputData )
-        res.status(201).json({
-            msj: `Canción creada`,
-            data: data
-        })
-    } catch ( error ) {
-        console.error( error )
+        const { name, artist, imageUrl, externalUrl, genre } = req.body;
+        if (!name || !imageUrl) {
+            return res.status(400).json({
+                msg: "El nombre y la URL de la imagen son obligatorios"
+            });
+        }
+        const newMusic = await dbCreateMusic({ name, artist, imageUrl, externalUrl, genre });
+        return res.status(201).json({
+            msg: "Canción agregada a la base de datos",
+            data: newMusic
+        });
+    } catch (error) {
+        console.error("Error al agregar canción", error);
         if (error.name === 'ValidationError') {
             return res.status(400).json({
-                msj: 'Error de validacion',
+                msg: "Error de validación",
                 errors: Object.values(error.errors).map(e => e.message)
-            })
-        }        
-        res.status(500).json({
-            msj: `Error al crear la canción`
-        })
+            });
+        }
+        return res.status(500).json({
+            msg: "No se pudo agregar la canción",
+            error: error.message
+        });
     }
-}
+};
 
-async function updateMusic ( req, res ) {
+// 2. Obtiene todas las canciones activas de la base de datos
+const getAllMusicController = async (req, res) => {
     try {
-        const id = req.params.id
-        const inputData = req.body
-        const data = await dbUpdateMusic( id, inputData )
-        res.json({
-            mej: `Atualiza informacion de la canción`,
-            data: data
-        })
-    } catch ( error ) {
-        console.error( error )
-        if ( error.name === `ValidationError`) {
-            return res.status(400).json({
-                msj: `Error de validacion`,
-                errors: Object.values(error.errors).map(e => e.message)
-            })
-        }
-        if (error.name === 'CastError') {
-            return res.status(400).json({
-                msj: `valor invalido para el campo '${error.path}'`
-            })
-        }
-        res.status(500).json({
-            msj: `Error al actualizar la informacion de la canción`
-        })
+        const musicList = await dbGetAllMusic();
+        return res.status(200).json({ data: musicList });
+    } catch (error) {
+        console.error("Error al obtener canciones", error);
+        return res.status(500).json({
+            msg: "No se pudo obtener las canciones",
+            error: error.message
+        });
     }
 }
 
-async function deleteMusic(req, res) {
+//3. Obtener una sola por ID 
+const dbGetMusicByIdController = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await dbDeleteMusic(id);
-        res.json({
-            msj: `Se ha borrado la canción`,
-            data: data
-        })
+        const music = await dbGetMusicById(id);
+        if (!music) {
+            return res.status(404).json({ msg: "Música no encontrada" });
+        }
+        return res.status(200).json({ data: music });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            msj: `Error al borrar la canción`
-        })
+        console.error("Error al obtener canción", error);
+        return res.status(500).json({
+            msg: "No se pudo obtener la canción",
+            error: error.message
+        });
     }
 }
 
-export { getmusic, getMusicById, postMusic, updateMusic, deleteMusic }
+// 4. Actualiza una cancion (acepta campos parciales)
+const updateMusicController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({ msg: "No se enviaron campos para actualizar" });
+        }
+
+        const updatedMusic = await dbUpdateMusic(id, updateData);
+
+        if (!updatedMusic) {
+            return res.status(404).json({ msg: "Música no encontrada para actualizar" });
+        }
+        return res.status(200).json({ msg: "Música actualizada", data: updatedMusic });
+    } catch (error) {
+        console.error("Error al actualizar la música:", error);
+        return res.status(500).json({ msg: "Error interno del servidor", error: error.message });
+    }
+}
+
+// 5. elimina una cancion
+const deleteMusicController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedMusic = await dbDeleteMusic(id);
+        if (!deletedMusic) {
+            return res.status(404).json({
+                msg: "Música no encontrada para eliminar"
+            });
+        }
+        return res.status(200).json({
+            msg: "Música eliminada correctamente"
+        });
+
+    }
+    catch (error) {
+        console.error("Error al eliminar canción", error);
+        return res.status(500).json({
+            msg: "No se pudo eliminar la canción",
+            error: error.message
+        });
+    }
+}
+
+export {
+    createMusicController,
+    getAllMusicController,
+    dbGetMusicByIdController,
+    updateMusicController,
+    deleteMusicController
+}
+

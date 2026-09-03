@@ -11,13 +11,17 @@ import authRoutes from './routes/auth.routes.js';
 import roleRoutes from './routes/role.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import barRoutes from './routes/bar.routes.js';
-import musicRoutes from './routes/music.routes.js'
+
+import supportRoutes from './routes/support.routes.js';
+import postRoutes from './routes/post.routes.js';
+import musicRoutes from './routes/music.routes.js';
+
 
 const app = express();
 
 
 dbConection();            //llamamos a la funcion para conectar con la base de datos
-app.use(cors( {
+app.use(cors({
     //origin: `http://localhost:4200/`
 }));
 
@@ -36,16 +40,20 @@ app.get(`/health`, (req, res) => {
 //endpoint para probar rutas
 app.use('/api/categories', categoryRoutes);
 app.use('/api/tickets', ticketRoutes);
-app.use('/api/events', eventsRoutes );
-app.use('/api/locations', locationsRoutes );
-app.use('/api/users', userRoutes );
-app.use('/api/auth', authRoutes );
-app.use('/api/roles', roleRoutes );
+app.use('/api/events', eventsRoutes);
+app.use('/api/locations', locationsRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/roles', roleRoutes);
 app.use('/api/carts', cartRoutes);
 app.use('/api/bars', barRoutes);
-app.use('/api/music', musicRoutes)
+app.use('/api/posts', postRoutes);
+app.use('/api/support', supportRoutes);
+app.use('/api/music', musicRoutes);
+
 
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+

@@ -32,6 +32,10 @@ const UserSchema = new Schema({
     isActive: {
         type: Boolean,
         default: true,
+    },
+    barId: {
+        type: Schema.Types.ObjectId,
+        ref: 'bars'
     }
 
 }, {

@@ -47,11 +47,25 @@ const EventSchema = new Schema({
     },
     city: {
         type: String,
-        required: true
+        default: 'General'
     },
     imageUrl: {
         type: String,
         required: true
+    },
+    bar: {
+        type: Schema.Types.ObjectId,
+        ref: 'bars',
+        default: null
+    },
+    capacity: {
+        type: Number,
+        required: [true, "El aforo del evento es obligatorio"],
+        min: [1, "La capacidad debe ser al menos 1"]
+    },
+    availableTickets: {
+        type: Number,
+        min: 0
     },
     status: {
         type: Boolean,

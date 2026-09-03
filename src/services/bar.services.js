@@ -5,11 +5,15 @@ const dbCreateBar = async ( newBar ) => {
 }
 
 const dbGetBar = async () => {
-    return await BarModel.find()
+    return await BarModel.find().populate('userId', 'name email role')
 }
 
 const dbGetBarById = async( id ) => {
-    return await BarModel.findById( id )
+    return await BarModel.findById( id ).populate('userId', 'name email role')
+}
+
+const dbGetBarByUserId = async( userId ) => {
+    return await BarModel.findOne({ userId }).populate('userId', 'name email role')
 }
 
 const dbDeleteBar = async( id ) => {
@@ -17,7 +21,7 @@ const dbDeleteBar = async( id ) => {
 }
 
 const dbUpdateBar = async( id, inputData ) => {
-    return await BarModel.findOneAndUpdate({ _id: id }, inputData, {returnDocument: 'after'})
+    return await BarModel.findOneAndUpdate({ _id: id }, inputData, {returnDocument: 'after'}).populate('userId', 'name email role')
 }
 
-export { dbCreateBar, dbGetBar, dbGetBarById, dbDeleteBar, dbUpdateBar }
+export { dbCreateBar, dbGetBar, dbGetBarById, dbGetBarByUserId, dbDeleteBar, dbUpdateBar }
