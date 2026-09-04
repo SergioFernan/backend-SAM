@@ -14,10 +14,10 @@ const MusicSchema = new Schema(
             type: String,
             default: "/assets/default-event.jpg"
         },
-        externalUrl: {
-            type: String,
-            trim: true
-        },
+        // externalUrl: {
+        //     type: String,
+        //     trim: true
+        // },
         genre: {
             type: String,
             trim: true
@@ -29,6 +29,7 @@ const MusicSchema = new Schema(
         },
         isActive: {
             type: Boolean,
+            default: true
 
         }
     },

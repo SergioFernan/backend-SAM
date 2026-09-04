@@ -7,7 +7,7 @@ const REMOTE_STRING_CONNECTION = process.env.MONGO_URI || LOCAL_STRING_CONNECTIO
 async function dbConection() {
     try {
 
-        await mongoose.connect( REMOTE_STRING_CONNECTION );
+        await mongoose.connect( 'mongodb+srv://mrippo:Santafesito-2@cluster0.s8nhaxy.mongodb.net/db-SAM' );
 
         console.log(`conected mongodb`);
     } catch (error) {

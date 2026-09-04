@@ -21,9 +21,9 @@ const app = express();
 
 
 dbConection();            //llamamos a la funcion para conectar con la base de datos
-app.use(cors({
+app.use(cors(
     //origin: `http://localhost:4200/`
-}));
+));
 
 
 app.use(express.json());  //Habilitamos la interceptación de objetos JSon

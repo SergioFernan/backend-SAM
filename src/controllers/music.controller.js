@@ -3,13 +3,13 @@ import { dbCreateMusic, dbGetAllMusic, dbGetMusicById, dbUpdateMusic, dbDeleteMu
 // 1. Crea la cancion en la base de datos 
 const createMusicController = async (req, res) => {
     try {
-        const { name, artist, imageUrl, externalUrl, genre } = req.body;
+        const { name, artist, imageUrl, youtubeUrl, genre } = req.body;
         if (!name || !imageUrl) {
             return res.status(400).json({
                 msg: "El nombre y la URL de la imagen son obligatorios"
             });
         }
-        const newMusic = await dbCreateMusic({ name, artist, imageUrl, externalUrl, genre });
+        const newMusic = await dbCreateMusic({ name, artist, imageUrl, youtubeUrl, genre });
         return res.status(201).json({
             msg: "Canción agregada a la base de datos",
             data: newMusic
